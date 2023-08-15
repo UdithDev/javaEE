@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="gdse">
+    <output-path>$PROJECT_DIR$/out/artifacts/gdse</output-path>
+    <root id="archive" name="gdse.war">
+      <element id="javaee-facet-resources" facet="01_HelloServlet/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="01_HelloServlet" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

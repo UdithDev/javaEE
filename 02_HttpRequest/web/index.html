@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>AJAX with jQuery</title>
+    <link href="assets/boostrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<section class="container-fluid p-4 bg-secondary text-white">
+    <h1 class="fw-bold">Ajax With jQuery</h1>
+</section>
+<section class="container mt-3">
+
+    <!--File type txt-->
+    <div class="row mt-3">
+        <div class="col-2">
+            <button class=" btn btn-danger" id="btn1">Send Request to txt file</button>
+        </div>
+        <div class="col">
+            <p id="p"></p>
+        </div>
+    </div>
+    <!--FIle type xml-->
+    <div class="row mt-3">
+        <div class="col-2">
+            <button class="btn btn-danger" id="btn2"> Send request to xml file</button>
+        </div>
+        <div class="col">
+            <table class="table table-bordered table-hover">
+                <thead class="table-danger text-center">
+                <tr>
+                    <th>Customer ID</th>
+                    <th> Name</th>
+                    <th> Address</th>
+                    <th> Salary</th>
+                </tr>
+                </thead>
+                <tbody id="tblCustomer">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-2">
+            <button class="btn btn-danger" id="btn3"> Send request to Json file</button>
+        </div>
+        <div class="col">
+            <table class="table table-bordered table-hover">
+                <thead class="table-danger text-center">
+                <tr>
+                    <th>Customer ID</th>
+                    <th> Name</th>
+                    <th> Address</th>
+                    <th> Salary</th>
+                </tr>
+                </thead>
+                <tbody id="tblCustomerJson">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+<script src="assets/jquery-3.7.0.min.js"></script>
+
+
+<script>
+    $("#btn1").click(function () {
+        var http = new XMLHttpRequest();
+
+        $.ajax({
+            url: "db/db.txt",
+            success: function (resp) {
+                $("#p").text(resp);
+                console.log(resp);
+            }
+
+        })
+    });
+
+    $("#btn2").click(function () {
+        $("#tblCustomer").empty();
+        $.ajax({
+            url: "db/db.xml",
+            success: function (resp) {
+                console.log(resp);
+               for (let i=0; i< $(resp).children().children().length; i++){
+                   var id = $(resp).children().children().eq(i).find("id").text();
+                   var name = $(resp).children().children().eq(i).find("name").text();
+                   var address = $(resp).children().children().eq(i).find("address").text();
+                   var salary  = $(resp).children().children().eq(i).find("salary").text();
+
+                   console.log(id, name ,address,salary);
+
+                   let row=`<tr><td>${id}</td><td>${name}</td><td>${address}</td><td>${salary}</td></tr>`;
+                   $("#tblCustomer").append(row);
+               }
+            },
+            error: function (xhr) {
+                console.log(xhr);
+            }
+        });
+    });
+
+
+
+
+    $("#btn3").click(function () {
+        $.ajax({
+          /*  method:"POST",*/
+            url:"http://localhost:8081/absd/customer",
+            success:function (resp){
+                console.log(resp);
+            }
+        });
+    });
+
+</script>
+</body>
+</html>
