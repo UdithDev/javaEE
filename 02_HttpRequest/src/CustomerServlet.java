@@ -12,6 +12,8 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
+        String method = req.getMethod();
+        System.out.println("Request Method is :"+method);
         writer.write("Request Received from GET Method ");
     }
 
