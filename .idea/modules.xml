@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/01_HelloServlet/01_HelloServlet.iml" filepath="$PROJECT_DIR$/01_HelloServlet/01_HelloServlet.iml" />
       <module fileurl="file://$PROJECT_DIR$/02_HttpRequest/02_HttpRequest.iml" filepath="$PROJECT_DIR$/02_HttpRequest/02_HttpRequest.iml" />
       <module fileurl="file://$PROJECT_DIR$/03_MappingSpec/03_MappingSpec.iml" filepath="$PROJECT_DIR$/03_MappingSpec/03_MappingSpec.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04_AppOne/04_AppOne.iml" filepath="$PROJECT_DIR$/04_AppOne/04_AppOne.iml" />
+      <module fileurl="file://$PROJECT_DIR$/05_AppTwo/05_AppTwo.iml" filepath="$PROJECT_DIR$/05_AppTwo/05_AppTwo.iml" />
     </modules>
   </component>
 </project>
