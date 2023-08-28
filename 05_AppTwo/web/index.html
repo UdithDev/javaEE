@@ -32,12 +32,12 @@
                     <label for="cusSalary" class="form-label">Customer Salary</label>
                     <input type="text" class="form-control" id="cusSalary" placeholder="Customer Salary" name="customerSalary">
                 </div>
-                <div class="mb-3">
+                <div >
                     <button type="button" id="btnSave" class="btn btn-primary">Save Customer</button>
+                    <button  type="button" id="btnDelete" class="btn btn-danger">Remove Customer</button>
                 </div>
-               <!-- <div class="mb-3">
-                    <button class="btn btn-danger">Remove Customer</button>
-                </div>-->
+
+
             </form>
         </div>
     </div>
@@ -67,10 +67,12 @@
 
 
 <script src="assets/jquery-3.7.0.min.js"></script>
-
-
 <script>
-    $("#btn3").click(function () {
+
+    loadAllCustomers();
+
+    function loadAllCustomers(){
+        $("#tblCustomerJson").empty();
         $.ajax({
             url:"customer",
             success: function (resp) {
@@ -87,12 +89,16 @@
                 }
             },
             error:function (xhr){
-                  console.log(xhr);
+                console.log(xhr);
             }
         });
+    }
+    $("#btn3").click(function () {
+       loadAllCustomers();
     });
 
     $("#btnSave").click( function () {
+
         let data = $("#customerForm").serialize();
         $.ajax({
 
@@ -100,11 +106,28 @@
             method:"post",
             data: data,
             success: function (resp){
-                console.log(resp);
-            }
-        })
-    })
+                alert("Customer Added");
+                loadAllCustomers()
+            },
+            error: function (){
 
+            }
+        });
+    });
+    
+    $("#btnDelete").click( function () {
+        let data = $("#cusID").val();
+        $.ajax({
+            url:'customer?cusId='+data,
+            method:"delete",
+            success: function (resp) {
+                alert("Customer Delete!!")
+                loadAllCustomers();
+            }
+        });
+    });
+
+    
 </script>
 </body>
 </html>

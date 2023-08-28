@@ -72,4 +72,24 @@ public class CustomerServlet extends HttpServlet {
         }
 
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("delete");
+        String customerID = req.getParameter("cusId");
+        System.out.println(customerID);
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_system", "root", "1234");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE  FROM customer WHERE cusId=?");
+            preparedStatement.setObject(1,customerID);
+
+            if(preparedStatement.executeUpdate()>0){
+                PrintWriter writer = resp.getWriter();
+                writer.write("customer Delete");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
