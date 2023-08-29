@@ -11,30 +11,34 @@
     <h1 class="fw-bold">Ajax With jQuery</h1>
 </section>
 
-<section class="container mt-3">
+<section class="container-fluid mt-3">
     <!--customer save-->
     <div class="row mt-3">
-        <div class="col-5">
+        <div class="col-4">
             <form id="customerForm">
                 <div class="mb-3">
-                    <label for="cusID" class="form-label">Customer ID</label>
-                    <input type="text"class="form-control" id="cusID" placeholder="Customer ID" name="customerId">
+                    <label class="form-label" for="cusID">Customer ID</label>
+                    <input class="form-control" id="cusID" name="customerId" placeholder="Customer ID" type="text">
                 </div>
                 <div class="mb-3">
-                    <label for="cusName" class="form-label">Customer Name</label>
-                    <input type="text" class="form-control" id="cusName" placeholder="Customer Name" name="customerName">
+                    <label class="form-label" for="cusName">Customer Name</label>
+                    <input class="form-control" id="cusName" name="customerName" placeholder="Customer Name"
+                           type="text">
                 </div>
                 <div class="mb-3">
-                    <label for="cusAddress" class="form-label">Customer Address</label>
-                    <input type="text" class="form-control" id="cusAddress" placeholder="Customer Address" name="customerAddress">
+                    <label class="form-label" for="cusAddress">Customer Address</label>
+                    <input class="form-control" id="cusAddress" name="customerAddress" placeholder="Customer Address"
+                           type="text">
                 </div>
                 <div class="mb-3">
-                    <label for="cusSalary" class="form-label">Customer Salary</label>
-                    <input type="text" class="form-control" id="cusSalary" placeholder="Customer Salary" name="customerSalary">
+                    <label class="form-label" for="cusSalary">Customer Salary</label>
+                    <input class="form-control" id="cusSalary" name="customerSalary" placeholder="Customer Salary"
+                           type="text">
                 </div>
-                <div >
-                    <button type="button" id="btnSave" class="btn btn-primary">Save Customer</button>
-                    <button  type="button" id="btnDelete" class="btn btn-danger">Remove Customer</button>
+                <div>
+                    <button class="btn btn-primary" id="btnSave" type="button">Save</button>
+                    <button class="btn btn-danger" id="btnDelete" type="button">Remove</button>
+                    <button class="btn btn-success" id="btnUpdate" type="button">Update</button>
                 </div>
 
 
@@ -45,7 +49,7 @@
 
     <div class="row mt-3">
         <div class="col-2">
-            <button class="btn btn-danger" id="btn3"> Send request to Json file</button>
+            <button class="btn btn-danger" id="btn3"> Get All</button>
         </div>
         <div class="col">
             <table class="table table-bordered table-hover">
@@ -71,55 +75,57 @@
 
     loadAllCustomers();
 
-    function loadAllCustomers(){
+    function loadAllCustomers() {
         $("#tblCustomerJson").empty();
         $.ajax({
-            url:"customer",
+            url: "customer",
             success: function (resp) {
                 console.log(resp);
                 for (let i in resp) {
                     let id = resp[i].id;
                     let name = resp[i].name;
                     let address = resp[i].address;
-                    let salary=resp[i].salary;
-                    console.log(id, name, address,salary);
+                    let salary = resp[i].salary;
+                    console.log(id, name, address, salary);
 
                     let row = `<tr><td>${id}</td><td>${name}</td><td>${address}</td><td>${salary}</td></tr>`;
                     $("#tblCustomerJson").append(row);
                 }
+                bindClickEvents();
             },
-            error:function (xhr){
+            error: function (xhr) {
                 console.log(xhr);
             }
         });
     }
+
     $("#btn3").click(function () {
-       loadAllCustomers();
+        loadAllCustomers();
     });
 
-    $("#btnSave").click( function () {
+    $("#btnSave").click(function () {
 
         let data = $("#customerForm").serialize();
         $.ajax({
 
-            url:"customer",
-            method:"post",
+            url: "customer",
+            method: "post",
             data: data,
-            success: function (resp){
+            success: function (resp) {
                 alert("Customer Added");
                 loadAllCustomers()
             },
-            error: function (){
+            error: function () {
 
             }
         });
     });
-    
-    $("#btnDelete").click( function () {
+
+    $("#btnDelete").click(function () {
         let data = $("#cusID").val();
         $.ajax({
-            url:'customer?cusId='+data,
-            method:"delete",
+            url: 'customer?cusId=' + data,
+            method: "DELETE",
             success: function (resp) {
                 alert("Customer Delete!!")
                 loadAllCustomers();
@@ -127,7 +133,43 @@
         });
     });
 
-    
+    $("#btnUpdate").click(function () {
+        /*  let cusId = $("#cusID").val();
+          let cusName = $("#cusName").val();
+          let cusAddress = $("#cusAddress").val();
+          let cusSalary = $("#cusSalary").val();
+        */
+        let formData = $("#customerForm").serialize();
+        $.ajax({
+            /*url:'customer?customerId='+cusId+'&customerName='+cusName+'&customerAddress='+cusAddress+'&customerSalary='+cusSalary,*/
+            url: "customer?" + formData,
+            method: 'PUT',
+            // data: formData,
+
+            success: function (resp) {
+                alert("Updated");
+                loadAllCustomers();
+            },
+            error: function (xhr) {
+                console.log(xhr);
+            }
+        });
+    });
+
+    function bindClickEvents() {
+        $("#tblCustomerJson>tr").click(function () {
+            let id = $(this).children().eq(0).text();
+            let name = $(this).children().eq(1).text();
+            let address = $(this).children().eq(2).text();
+            let salary = $(this).children().eq(3).text();
+
+            $("#cusID").val(id);
+            $("#cusName").val(name);
+            $("#cusAddress").val(address);
+            $("#cusSalary").val(salary);
+        });
+    }
+
 </script>
 </body>
 </html>
