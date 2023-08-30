@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>AJAX with jQuery</title>
+    <link href="assets/boostrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<section class="container-fluid p-4 bg-secondary text-white">
+    <h1 class="fw-bold">Ajax With jQuery</h1>
+</section>
+
+<section class="container-fluid mt-3">
+    <!--customer save-->
+    <div class="row mt-3">
+        <div class="col-4">
+            <form id="customerForm">
+                <div class="mb-3">
+                    <label class="form-label" for="cusID">Customer ID</label>
+                    <input class="form-control" id="cusID" name="customerId" placeholder="Customer ID" type="text">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="cusName">Customer Name</label>
+                    <input class="form-control" id="cusName" name="customerName" placeholder="Customer Name"
+                           type="text">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="cusAddress">Customer Address</label>
+                    <input class="form-control" id="cusAddress" name="customerAddress" placeholder="Customer Address"
+                           type="text">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="cusSalary">Customer Salary</label>
+                    <input class="form-control" id="cusSalary" name="customerSalary" placeholder="Customer Salary"
+                           type="text">
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="btnSave" type="button">Save</button>
+                    <button class="btn btn-danger" id="btnDelete" type="button">Remove</button>
+                    <button class="btn btn-success" id="btnUpdate" type="button">Update</button>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row mt-3">
+        <div class="col-2">
+            <button class="btn btn-danger" id="btn3"> Get All</button>
+        </div>
+        <div class="col">
+            <table class="table table-bordered table-hover">
+                <thead class="table-danger text-center">
+                <tr>
+                    <th>Customer ID</th>
+                    <th> Name</th>
+                    <th> Address</th>
+                    <th> Salary</th>
+                </tr>
+                </thead>
+                <tbody id="tblCustomerJson">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+<script src="assets/jquery-3.7.0.min.js"></script>
+<script>
+
+    loadAllCustomers();
+
+    function loadAllCustomers() {
+        $("#tblCustomerJson").empty();
+        $.ajax({
+            url: "customer",
+            success: function (resp) {
+                console.log(resp);
+                for (let i in resp) {
+                    let id = resp[i].id;
+                    let name = resp[i].name;
+                    let address = resp[i].address;
+                    let salary = resp[i].salary;
+                    console.log(id, name, address, salary);
+
+                    let row = `<tr><td>${id}</td><td>${name}</td><td>${address}</td><td>${salary}</td></tr>`;
+                    $("#tblCustomerJson").append(row);
+                }
+                bindClickEvents();
+            },
+            error: function (xhr) {
+                console.log(xhr);
+            }
+        });
+    }
+
+    $("#btn3").click(function () {
+        loadAllCustomers();
+    });
+
+    $("#btnSave").click(function () {
+
+        let data = $("#customerForm").serialize();
+        $.ajax({
+
+            url: "customer",
+            method: "post",
+            data: data,
+            success: function (resp) {
+                alert("Customer Added");
+                loadAllCustomers()
+            },
+            error: function () {
+
+            }
+        });
+    });
+
+    $("#btnDelete").click(function () {
+        let data = $("#cusID").val();
+        $.ajax({
+            url: 'customer?cusId=' + data,
+            method: "DELETE",
+            success: function (resp) {
+                alert("Customer Delete!!")
+                loadAllCustomers();
+            }
+        });
+    });
+
+    $("#btnUpdate").click(function () {
+        /*  let cusId = $("#cusID").val();
+          let cusName = $("#cusName").val();
+          let cusAddress = $("#cusAddress").val();
+          let cusSalary = $("#cusSalary").val();
+        */
+        let formData = $("#customerForm").serialize();
+        $.ajax({
+            /*url:'customer?customerId='+cusId+'&customerName='+cusName+'&customerAddress='+cusAddress+'&customerSalary='+cusSalary,*/
+            url: "customer?" + formData,
+            method: 'PUT',
+            // data: formData,
+
+            success: function (resp) {
+                alert("Updated");
+                loadAllCustomers();
+            },
+            error: function (xhr) {
+                console.log(xhr);
+            }
+        });
+    });
+
+    function bindClickEvents() {
+        $("#tblCustomerJson>tr").click(function () {
+            let id = $(this).children().eq(0).text();
+            let name = $(this).children().eq(1).text();
+            let address = $(this).children().eq(2).text();
+            let salary = $(this).children().eq(3).text();
+
+            $("#cusID").val(id);
+            $("#cusName").val(name);
+            $("#cusAddress").val(address);
+            $("#cusSalary").val(salary);
+        });
+    }
+
+</script>
+</body>
+</html>
