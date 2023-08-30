@@ -68,9 +68,14 @@ public class CustomerServlet extends HttpServlet {
             preparedStatement.setObject(3,cusAddress);
             preparedStatement.setObject(4,cusSalary);
             int rst = preparedStatement.executeUpdate();
+
+            resp.setContentType("application/json");
             if(rst>0){
-                PrintWriter writer = resp.getWriter();
-                writer.write("customer Add");
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("data","");
+                objectBuilder.add("status","Ok");
+                objectBuilder.add("message","Successfully Added !!!!!");
+                resp.getWriter().print(objectBuilder.build());
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -115,9 +120,15 @@ public class CustomerServlet extends HttpServlet {
             preparedStatement.setObject(2,cusAddress);
             preparedStatement.setObject(3,cusSalary);
 
+            resp.setContentType("application/json");
+
+            JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
             if(preparedStatement.executeUpdate()>0){
+                objectBuilder.add("data","");
+                objectBuilder.add("Status",200);
+                objectBuilder.add("message","Updated");
                 PrintWriter writer = resp.getWriter();
-                writer.write("customer Update");
+                writer.print(objectBuilder.build());
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();

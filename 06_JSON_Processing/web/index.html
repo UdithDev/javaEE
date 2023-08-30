@@ -113,6 +113,7 @@
             data: data,
             success: function (resp) {
                 alert("Customer Added");
+                console.log(resp);
                 loadAllCustomers()
             },
             error: function () {
@@ -148,6 +149,7 @@
 
             success: function (resp) {
                 alert("Updated");
+                console.log(resp);
                 loadAllCustomers();
             },
             error: function (xhr) {
