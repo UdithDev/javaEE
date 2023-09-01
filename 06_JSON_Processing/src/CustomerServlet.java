@@ -14,13 +14,6 @@ import java.sql.*;
 public class CustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-       String customerId = req.getParameter("customerId");
-        String customerName = req.getParameter("customerName");
-        String customerAddress = req.getParameter("customerAddress");
-        String customerSalary = req.getParameter("customerSalary");
-
-        System.out.println(customerId+" "+customerName+" "+customerAddress+" "+customerSalary);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_system", "root", "1234");
@@ -36,10 +29,10 @@ public class CustomerServlet extends HttpServlet {
                 String salary = rst.getString(4);
                 JsonObjectBuilder customerObject = Json.createObjectBuilder();
 
-                customerObject.add("id",id);
-                customerObject.add("name",name);
-                customerObject.add("address",address);
-                customerObject.add("salary",salary);
+                customerObject.add("id", id);
+                customerObject.add("name", name);
+                customerObject.add("address", address);
+                customerObject.add("salary", salary);
 
                 arrayBuilder.add(customerObject.build());
             }
@@ -52,6 +45,7 @@ public class CustomerServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -65,16 +59,16 @@ public class CustomerServlet extends HttpServlet {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO customer values (?,?,?,?)");
             preparedStatement.setObject(1, cusId);
             preparedStatement.setObject(2, cusName);
-            preparedStatement.setObject(3,cusAddress);
-            preparedStatement.setObject(4,cusSalary);
+            preparedStatement.setObject(3, cusAddress);
+            preparedStatement.setObject(4, cusSalary);
             int rst = preparedStatement.executeUpdate();
 
             resp.setContentType("application/json");
-            if(rst>0){
+            if (rst > 0) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("data","");
-                objectBuilder.add("status","Ok");
-                objectBuilder.add("message","Successfully Added !!!!!");
+                objectBuilder.add("data", "");
+                objectBuilder.add("status", 200);
+                objectBuilder.add("message", "Successfully Added !!!!!");
                 resp.getWriter().print(objectBuilder.build());
             }
         } catch (ClassNotFoundException | SQLException e) {
@@ -91,9 +85,9 @@ public class CustomerServlet extends HttpServlet {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_system", "root", "1234");
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE  FROM customer WHERE cusId=?");
-            preparedStatement.setObject(1,customerID);
+            preparedStatement.setObject(1, customerID);
 
-            if(preparedStatement.executeUpdate()>0){
+            if (preparedStatement.executeUpdate() > 0) {
                 PrintWriter writer = resp.getWriter();
                 writer.write("customer Delete");
             }
@@ -110,23 +104,23 @@ public class CustomerServlet extends HttpServlet {
         String cusAddress = req.getParameter("customerAddress");
         String cusSalary = req.getParameter("customerSalary");
 
-        System.out.println(cusId+" "+cusName+" "+cusAddress+" "+cusSalary);
+        System.out.println(cusId + " " + cusName + " " + cusAddress + " " + cusSalary);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_system", "root", "1234");
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE customer SET cusName=?,cusAddress=?,cusSalary=? WHERE cusId=?");
-            preparedStatement.setObject(4,cusId);
-            preparedStatement.setObject(1,cusName);
-            preparedStatement.setObject(2,cusAddress);
-            preparedStatement.setObject(3,cusSalary);
+            preparedStatement.setObject(4, cusId);
+            preparedStatement.setObject(1, cusName);
+            preparedStatement.setObject(2, cusAddress);
+            preparedStatement.setObject(3, cusSalary);
 
             resp.setContentType("application/json");
 
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-            if(preparedStatement.executeUpdate()>0){
-                objectBuilder.add("data","");
-                objectBuilder.add("Status",200);
-                objectBuilder.add("message","Updated");
+            if (preparedStatement.executeUpdate() > 0) {
+                objectBuilder.add("data", "");
+                objectBuilder.add("Status", 200);
+                objectBuilder.add("message", "Updated");
                 PrintWriter writer = resp.getWriter();
                 writer.print(objectBuilder.build());
             }
