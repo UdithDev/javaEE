@@ -81,6 +81,7 @@ public class CustomerServlet extends HttpServlet {
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
             objectBuilder.add("data",e.getLocalizedMessage());
             objectBuilder.add("status", 500);
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             objectBuilder.add("message", "ERROR");
             resp.getWriter().print(objectBuilder.build());
         }
