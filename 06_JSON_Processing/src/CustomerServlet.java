@@ -38,8 +38,14 @@ public class CustomerServlet extends HttpServlet {
             }
 
             PrintWriter writer = resp.getWriter();
-            writer.print(arrayBuilder.build());
 
+
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status", 200);
+            response.add("message", "Done");
+            response.add("data", arrayBuilder.build());
+
+            writer.print(response.build());
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -48,7 +54,6 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         try {
             String cusId = req.getParameter("customerId");
             String cusName = req.getParameter("customerName");
@@ -73,6 +78,11 @@ public class CustomerServlet extends HttpServlet {
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+            JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+            objectBuilder.add("data",e.getLocalizedMessage());
+            objectBuilder.add("status", 500);
+            objectBuilder.add("message", "ERROR");
+            resp.getWriter().print(objectBuilder.build());
         }
 
     }
@@ -118,7 +128,7 @@ public class CustomerServlet extends HttpServlet {
 
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
             if (preparedStatement.executeUpdate() > 0) {
-                objectBuilder.add("data", "");
+                objectBuilder.add("data", objectBuilder.build());
                 objectBuilder.add("Status", 200);
                 objectBuilder.add("message", "Updated");
                 PrintWriter writer = resp.getWriter();

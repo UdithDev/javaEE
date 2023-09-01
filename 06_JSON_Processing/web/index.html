@@ -81,14 +81,8 @@
             url: "customer",
             success: function (resp) {
                 console.log(resp);
-                for (let i in resp) {
-                    let id = resp[i].id;
-                    let name = resp[i].name;
-                    let address = resp[i].address;
-                    let salary = resp[i].salary;
-                    console.log(id, name, address, salary);
-
-                    let row = `<tr><td>${id}</td><td>${name}</td><td>${address}</td><td>${salary}</td></tr>`;
+                for (const i of resp.data) {
+                    let row = `<tr><td>${i.id}</td><td>${i.name}</td><td>${i.address}</td><td>${i.salary}</td></tr>`;
                     $("#tblCustomerJson").append(row);
                 }
                 bindClickEvents();
