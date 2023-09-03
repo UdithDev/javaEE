@@ -101,17 +101,24 @@
 
         let data = $("#customerForm").serialize();
         $.ajax({
-
             url: "customer",
             method: "post",
             data: data,
             success: function (resp) {
-                alert(resp);
-                console.log(resp);
-                loadAllCustomers()
-            },
-            error: function () {
 
+                if(resp.status==200){
+                    alert(resp);
+                    console.log(resp);
+                    loadAllCustomers();
+                }else {
+                    alert(resp.data);
+                }
+
+
+            },
+            error: function (ob,textStatus,error) {
+                alert(textStatus);
+                console.log(ob.responseText);
             }
         });
     });
@@ -122,8 +129,21 @@
             url: 'customer?cusId=' + data,
             method: "DELETE",
             success: function (resp) {
-                alert("Customer Delete!!")
-                loadAllCustomers();
+                console.log(resp);
+                if(resp.status==200){
+                    alert(resp.message);
+                    loadAllCustomers();
+                }
+                else if(resp.status==400){
+                    alert(resp.message);
+                } else {
+                    alert(resp.message);
+                }
+            },
+            error: function (ob,status,t) {
+                console.log(ob);
+                console.log(status);
+                console.log(t);
             }
         });
     });

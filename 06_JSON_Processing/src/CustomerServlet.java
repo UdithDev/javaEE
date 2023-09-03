@@ -71,19 +71,31 @@ public class CustomerServlet extends HttpServlet {
             resp.setContentType("application/json");
             if (rst > 0) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                resp.setStatus(HttpServletResponse.SC_CREATED);//201
                 objectBuilder.add("data", "");
                 objectBuilder.add("status", 200);
                 objectBuilder.add("message", "Successfully Added !!!!!");
                 resp.getWriter().print(objectBuilder.build());
             }
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            resp.setStatus(HttpServletResponse.SC_OK);
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-            objectBuilder.add("data",e.getLocalizedMessage());
-            objectBuilder.add("status", 500);
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            objectBuilder.add("status", 400);
             objectBuilder.add("message", "ERROR");
+            objectBuilder.add("data", e.getLocalizedMessage());
             resp.getWriter().print(objectBuilder.build());
+
+            e.printStackTrace();
+
+        } catch (SQLException throwables) {
+            JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+            objectBuilder.add("status", 400);
+            objectBuilder.add("message", "ERROR");
+            objectBuilder.add("data", throwables.getLocalizedMessage());
+            resp.getWriter().print(objectBuilder.build());
+
+            resp.setStatus(HttpServletResponse.SC_OK);
+            throwables.printStackTrace();
         }
 
     }
@@ -93,17 +105,38 @@ public class CustomerServlet extends HttpServlet {
         System.out.println("delete");
         String customerID = req.getParameter("cusId");
         System.out.println(customerID);
+        PrintWriter writer = resp.getWriter();
+        resp.addHeader("Content-Type", "application/json");
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_system", "root", "1234");
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE  FROM customer WHERE cusId=?");
             preparedStatement.setObject(1, customerID);
 
+
             if (preparedStatement.executeUpdate() > 0) {
-                PrintWriter writer = resp.getWriter();
-                writer.write("customer Delete");
+
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("data", "");
+                objectBuilder.add("message", "Successfully Deleted");
+                objectBuilder.add("status", 200);
+                writer.print(objectBuilder.build());
+            } else{
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("data", "");
+                objectBuilder.add("message", "Wrong Id Entered");
+                objectBuilder.add("status", 400);
+                writer.print(objectBuilder.build());
             }
         } catch (SQLException e) {
             e.printStackTrace();
+//            resp.sendError(500,e.getMessage());
+
+            resp.setStatus(200);
+            JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+            objectBuilder.add("data", e.getLocalizedMessage());
+            objectBuilder.add("message", "Error");
+            objectBuilder.add("status", 500);
+            writer.print(objectBuilder.build());
         }
     }
 
