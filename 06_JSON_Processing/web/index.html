@@ -106,17 +106,17 @@
             data: data,
             success: function (resp) {
 
-                if(resp.status==200){
-                    alert(resp);
+                if (resp.status == 200) {
+                    alert(resp.message);
                     console.log(resp);
                     loadAllCustomers();
-                }else {
+                } else {
                     alert(resp.data);
                 }
 
 
             },
-            error: function (ob,textStatus,error) {
+            error: function (ob, textStatus, error) {
                 alert(textStatus);
                 console.log(ob.responseText);
             }
@@ -130,17 +130,16 @@
             method: "DELETE",
             success: function (resp) {
                 console.log(resp);
-                if(resp.status==200){
+                if (resp.status == 200) {
                     alert(resp.message);
                     loadAllCustomers();
-                }
-                else if(resp.status==400){
+                } else if (resp.status == 400) {
                     alert(resp.message);
                 } else {
                     alert(resp.message);
                 }
             },
-            error: function (ob,status,t) {
+            error: function (ob, status, t) {
                 console.log(ob);
                 console.log(status);
                 console.log(t);
@@ -149,22 +148,31 @@
     });
 
     $("#btnUpdate").click(function () {
-        /*  let cusId = $("#cusID").val();
-          let cusName = $("#cusName").val();
-          let cusAddress = $("#cusAddress").val();
-          let cusSalary = $("#cusSalary").val();
-        */
-        let formData = $("#customerForm").serialize();
+
+
+        let cusOb = {
+            id: $("#cusID").val(),
+            name: $("#cusName").val(),
+            address: $("#cusAddress").val(),
+            salary: $("#cusSalary").val()
+        }
+
         $.ajax({
             /*url:'customer?customerId='+cusId+'&customerName='+cusName+'&customerAddress='+cusAddress+'&customerSalary='+cusSalary,*/
-            url: "customer?" + formData,
+            url: "customer",
             method: 'PUT',
-            // data: formData,
+            contentType: "application/json",
+            data: JSON.stringify(cusOb),
 
             success: function (resp) {
-                alert("Updated");
-                console.log(resp);
-                loadAllCustomers();
+                if (resp.status == 200) {
+                    alert(resp.message);
+                    loadAllCustomers();
+                } else if (resp.status == 400) {
+                    alert(resp.message);
+                } else{
+                    alert(resp.data);
+                }
             },
             error: function (xhr) {
                 console.log(xhr);
