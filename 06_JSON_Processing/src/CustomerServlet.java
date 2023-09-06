@@ -13,38 +13,42 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            String option = req.getParameter("option");
+            resp.addHeader("Content-Type", "application/json");
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_system", "root", "1234");
-            ResultSet rst = connection.prepareStatement("select * from customer").executeQuery();
+            switch (option) {
 
-            resp.addHeader("Content-Type", "application/json");
+                case "SEARCH":
+                    break;
 
-            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-            while (rst.next()) {
-                String id = rst.getString(1);
-                String name = rst.getString(2);
-                String address = rst.getString(3);
-                String salary = rst.getString(4);
-                JsonObjectBuilder customerObject = Json.createObjectBuilder();
+                case "GETALL":
+                    ResultSet rst = connection.prepareStatement("select * from customer").executeQuery();
 
-                customerObject.add("id", id);
-                customerObject.add("name", name);
-                customerObject.add("address", address);
-                customerObject.add("salary", salary);
+                    JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+                    while (rst.next()) {
+                        String id = rst.getString(1);
+                        String name = rst.getString(2);
+                        String address = rst.getString(3);
+                        String salary = rst.getString(4);
+                        JsonObjectBuilder customerObject = Json.createObjectBuilder();
 
-                arrayBuilder.add(customerObject.build());
+                        customerObject.add("id", id);
+                        customerObject.add("name", name);
+                        customerObject.add("address", address);
+                        customerObject.add("salary", salary);
+
+                        arrayBuilder.add(customerObject.build());
+                    }
+                    PrintWriter writer = resp.getWriter();
+                    JsonObjectBuilder response = Json.createObjectBuilder();
+                    response.add("status", 200);
+                    response.add("message", "Done");
+                    response.add("data", arrayBuilder.build());
+
+                    writer.print(response.build());
+                    break;
             }
-
-            PrintWriter writer = resp.getWriter();
-
-
-            JsonObjectBuilder response = Json.createObjectBuilder();
-            response.add("status", 200);
-            response.add("message", "Done");
-            response.add("data", arrayBuilder.build());
-
-            writer.print(response.build());
-
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

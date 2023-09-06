@@ -78,7 +78,7 @@
     function loadAllCustomers() {
         $("#tblCustomerJson").empty();
         $.ajax({
-            url: "customer",
+            url: "customer?option=GETALL",
             success: function (resp) {
                 console.log(resp);
                 for (const i of resp.data) {
@@ -170,7 +170,7 @@
                     loadAllCustomers();
                 } else if (resp.status == 400) {
                     alert(resp.message);
-                } else{
+                } else {
                     alert(resp.data);
                 }
             },
