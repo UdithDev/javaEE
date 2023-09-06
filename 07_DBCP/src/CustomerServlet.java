@@ -42,6 +42,7 @@ public class CustomerServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
