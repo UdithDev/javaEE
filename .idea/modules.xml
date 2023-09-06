@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/04_AppOne/04_AppOne.iml" filepath="$PROJECT_DIR$/04_AppOne/04_AppOne.iml" />
       <module fileurl="file://$PROJECT_DIR$/05_AppTwo/05_AppTwo.iml" filepath="$PROJECT_DIR$/05_AppTwo/05_AppTwo.iml" />
       <module fileurl="file://$PROJECT_DIR$/06_JSON_Processing/06_JSON_Processing.iml" filepath="$PROJECT_DIR$/06_JSON_Processing/06_JSON_Processing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/07_DBCP/07_DBCP.iml" filepath="$PROJECT_DIR$/07_DBCP/07_DBCP.iml" />
     </modules>
   </component>
 </project>

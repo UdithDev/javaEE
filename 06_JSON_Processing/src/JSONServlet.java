@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 @WebServlet(urlPatterns = "/json")
 public class JSONServlet extends HttpServlet {
@@ -69,9 +70,10 @@ public class JSONServlet extends HttpServlet {
             String salary = jsonValue.asJsonObject().getString("salary");
 
             System.out.println(id+" "+name+" "+address+" "+salary);
-
         }
-       /* try {
+
+
+       /*try {
 
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_system", "root", "1234");
@@ -96,7 +98,7 @@ public class JSONServlet extends HttpServlet {
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        }
-*/
+        }*/
+
     }
 }
