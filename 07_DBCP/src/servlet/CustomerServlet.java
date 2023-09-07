@@ -24,8 +24,7 @@ public class CustomerServlet extends HttpServlet {
         ServletContext servletContext = req.getServletContext();
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
 
-        try {
-            Connection connection = pool.getConnection();
+        try ( Connection connection = pool.getConnection();){
             PreparedStatement pstm = connection.prepareStatement("select * from  customer");
             ResultSet rst = pstm.executeQuery();
            while ( rst.next()){

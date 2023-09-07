@@ -21,8 +21,7 @@ public class ItemServlet extends HttpServlet {
         ServletContext servletContext = req.getServletContext();
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
 
-        try {
-            Connection connection = pool.getConnection();
+        try (Connection connection = pool.getConnection();){
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM item");
             ResultSet resultSet = preparedStatement.executeQuery();
 
