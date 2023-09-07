@@ -21,17 +21,8 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        BasicDataSource pool=new BasicDataSource();
-        pool.setDriverClassName("com.mysql.jdbc.Driver");
-        pool.setUsername("root");
-        pool.setPassword("1234");
-        pool.setUrl("jdbc:mysql://localhost:3306/pos_system");
-        pool.setMaxTotal(5);
-        pool.setInitialSize(5);
-
         ServletContext servletContext = req.getServletContext();
-        servletContext.setAttribute("pool",pool);
+        BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
 
         try {
             Connection connection = pool.getConnection();
