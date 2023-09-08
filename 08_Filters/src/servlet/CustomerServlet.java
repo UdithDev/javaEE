@@ -77,6 +77,7 @@ public class CustomerServlet extends HttpServlet {
         ServletContext servletContext = req.getServletContext();
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
 
+        resp.addHeader("Access-Control-Allow-Origin","*");
         try (Connection connection = pool.getConnection();){
             String cusId = req.getParameter("customerId");
             String cusName = req.getParameter("customerName");
