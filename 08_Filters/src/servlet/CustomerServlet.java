@@ -126,7 +126,7 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.addHeader("Access-Control-Allow-Origin","");
+        resp.addHeader("Access-Control-Allow-Origin","*");
         System.out.println("delete");
         String customerID = req.getParameter("cusId");
         System.out.println(customerID);
@@ -170,6 +170,8 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Update");
+        resp.addHeader("Access-Control-Allow-Origin","*");
+
 
         //we have to updated data from Json format
 
@@ -227,5 +229,13 @@ public class CustomerServlet extends HttpServlet {
             objectBuilder.add("status", 500);
             writer.print(objectBuilder.build());
         }*/
+    }
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin","*");
+        resp.addHeader("Access-Control-Allow-Methods","DELETE ,PUT");
+        resp.addHeader("Access-Control-Allow-Headers"," Content-Type");
+
     }
 }

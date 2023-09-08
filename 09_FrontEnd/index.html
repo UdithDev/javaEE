@@ -129,6 +129,7 @@
         $.ajax({
             url: 'http://localhost:8081/filters/customer?cusId=' + data,
             method: "DELETE",
+
             success: function (resp) {
                 console.log(resp);
                 if (resp.status == 200) {
@@ -160,7 +161,7 @@
 
         $.ajax({
             /*url:'customer?customerId='+cusId+'&customerName='+cusName+'&customerAddress='+cusAddress+'&customerSalary='+cusSalary,*/
-            url: "customer",
+            url: "http://localhost:8081/filters/customer",
             method: 'PUT',
             contentType: "application/json",
             data: JSON.stringify(cusOb),
