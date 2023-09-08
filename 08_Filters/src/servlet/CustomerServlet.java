@@ -51,6 +51,7 @@ public class CustomerServlet extends HttpServlet {
 
                         arrayBuilder.add(customerObject.build());
                     }
+                    connection.close();
                     PrintWriter writer = resp.getWriter();
                     JsonObjectBuilder response = Json.createObjectBuilder();
                     response.add("status", 200);
