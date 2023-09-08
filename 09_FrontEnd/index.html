@@ -73,13 +73,15 @@
 <script src="assets/jquery-3.7.0.min.js"></script>
 <script>
 
+    const BASE_URL = "http://localhost:8081/filters/";
+
     loadAllCustomers();
 
     function loadAllCustomers() {
         $("#tblCustomerJson").empty();
         $.ajax({
-            url: "http://localhost:8081/filters/customer?option=GETALL",
-            method:'GET',
+            url: BASE_URL + "customer?option=GETALL",
+            method: 'GET',
             success: function (resp) {
                 console.log(resp);
                 for (const i of resp.data) {
@@ -102,7 +104,7 @@
 
         let data = $("#customerForm").serialize();
         $.ajax({
-            url: "http://localhost:8081/filters/customer",
+            url: BASE_URL + "customer",
             method: "post",
             data: data,
             success: function (resp) {
@@ -125,9 +127,9 @@
     });
 
     $("#btnDelete").click(function () {
-        let data = $("#cusID").val();
+        let id = $("#cusID").val();
         $.ajax({
-            url: 'http://localhost:8081/filters/customer?cusId=' + data,
+            url: BASE_URL + 'customer?cusId=' + id,
             method: "DELETE",
 
             success: function (resp) {
@@ -161,7 +163,7 @@
 
         $.ajax({
             /*url:'customer?customerId='+cusId+'&customerName='+cusName+'&customerAddress='+cusAddress+'&customerSalary='+cusSalary,*/
-            url: "http://localhost:8081/filters/customer",
+            url: BASE_URL + "customer",
             method: 'PUT',
             contentType: "application/json",
             data: JSON.stringify(cusOb),
