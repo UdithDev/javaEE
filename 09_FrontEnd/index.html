@@ -49,7 +49,7 @@
 
     <div class="row mt-3">
         <div class="col-2">
-            <button class="btn btn-danger" id="btn3"> Get All</button>
+            <button class="btn btn-danger" id="btn3" type="button"> Get All</button>
         </div>
         <div class="col">
             <table class="table table-bordered table-hover">
@@ -78,7 +78,8 @@
     function loadAllCustomers() {
         $("#tblCustomerJson").empty();
         $.ajax({
-            url: "customer?option=GETALL",
+            url: "http://localhost:8081/filters/customer?option=GETALL",
+            method:'GET',
             success: function (resp) {
                 console.log(resp);
                 for (const i of resp.data) {
@@ -101,7 +102,7 @@
 
         let data = $("#customerForm").serialize();
         $.ajax({
-            url: "customer",
+            url: "http://localhost:8081/filters/customer",
             method: "post",
             data: data,
             success: function (resp) {
@@ -126,7 +127,7 @@
     $("#btnDelete").click(function () {
         let data = $("#cusID").val();
         $.ajax({
-            url: 'customer?cusId=' + data,
+            url: 'http://localhost:8081/filters/customer?cusId=' + data,
             method: "DELETE",
             success: function (resp) {
                 console.log(resp);

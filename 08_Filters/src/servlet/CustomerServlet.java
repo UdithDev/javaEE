@@ -27,9 +27,13 @@ public class CustomerServlet extends HttpServlet {
             BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
 
 
+            resp.addHeader("Access-Control-Allow-Origin","*");
             switch (option) {
 
                 case "SEARCH":
+                  /*  Connection connection = pool.getConnection();
+                    PreparedStatement preparedStatement = connection.prepareStatement("SELECT  * FROM customer WHERE cusId= ?");
+                    ResultSet resultSet = preparedStatement.executeQuery();*/
                     break;
 
                 case "GETALL":
@@ -52,6 +56,7 @@ public class CustomerServlet extends HttpServlet {
                         arrayBuilder.add(customerObject.build());
                     }
                     connection.close();
+
                     PrintWriter writer = resp.getWriter();
                     JsonObjectBuilder response = Json.createObjectBuilder();
                     response.add("status", 200);
@@ -120,11 +125,13 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin","");
         System.out.println("delete");
         String customerID = req.getParameter("cusId");
         System.out.println(customerID);
         PrintWriter writer = resp.getWriter();
         resp.addHeader("Content-Type", "application/json");
+
         ServletContext servletContext = req.getServletContext();
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
         try (Connection connection = pool.getConnection();){
