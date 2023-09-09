@@ -29,7 +29,7 @@ public class CustomerServlet extends HttpServlet {
         ServletContext servletContext = req.getServletContext();
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
 
-
+        PrintWriter writer = resp.getWriter();
         try {
             Connection connection = pool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT  * FROM  customer");
@@ -53,7 +53,7 @@ public class CustomerServlet extends HttpServlet {
             }
             connection.close();
 
-            PrintWriter writer = resp.getWriter();
+
             JsonObjectBuilder response = Json.createObjectBuilder();
             response.add("status", 200);
             response.add("message", "Done");
@@ -62,6 +62,14 @@ public class CustomerServlet extends HttpServlet {
             writer.print(response.build());
         } catch (SQLException e) {
             e.printStackTrace();
+
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            resp.setStatus(200);
+            response.add("status", 400);
+            response.add("message", "SQL Error");
+            response.add("data", e.getLocalizedMessage());
+
+            writer.print(response.build());
         }
 
     }

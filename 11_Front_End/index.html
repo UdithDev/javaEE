@@ -463,27 +463,33 @@
     });
 
 
+    getAllCustomer();
     //customer GetAll
+function getAllCustomer(){
+    $("#tblCustomer").empty();
+    $.ajax({
+        url: "http://localhost:8081/10_BackEnd/customer",
+        method: 'GET',
+        dataType:'json',
+        success: function (resp) {
+            console.log(resp.data);
 
+            for (const i of resp.data) {
+                let row=`<tr><td>${i.id}</td><td>${i.name}</td><td>${i.address}</td><td>${i.salary}</td></tr>`;
+                $("#tblCustomer").append(row);
+            }
+            if(resp.status==400){
+                alert(resp.message);
+            }
+        },
+        error: function (xhr) {
+            console.log(xhr);
+        }
+    });
+}
 
     $("#btnGetAll").click(function () {
-        $.ajax({
-            url: "http://localhost:8081/10_BackEnd/customer",
-            method: 'GET',
-            dataType:'json',
-            success: function (resp) {
-                alert(resp.message);
-                console.log(resp.data);
-
-                for (const i of resp.data) {
-                    let row=`<tr><td>${i.id}</td><td>${i.name}</td><td>${i.address}</td><td>${i.salary}</td></tr>`;
-                    $("#tblCustomer").append(row);
-                }
-            },
-            error: function (xhr) {
-                console.log(xhr);
-            }
-        });
+      getAllCustomer();
     });
 
 </script>
