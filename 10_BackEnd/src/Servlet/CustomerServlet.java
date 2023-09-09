@@ -15,6 +15,7 @@ public class CustomerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("DO Get Method INVOKED");
 
+        resp.addHeader("Access-Control-Allow-Origin","*");
         PrintWriter writer = resp.getWriter();
         writer.write("Response Ok");
     }
