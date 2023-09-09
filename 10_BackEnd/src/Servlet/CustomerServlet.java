@@ -75,6 +75,50 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        System.out.println("Post method invoked");
+
+        ServletContext servletContext = req.getServletContext();
+        BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
+        PrintWriter writer = resp.getWriter();
+
+
+        try (Connection connection = pool.getConnection()) {
+
+            String cusID = req.getParameter("cusID");
+            String name = req.getParameter("cusName");
+            String address = req.getParameter("cusAddress");
+            String salary = req.getParameter("cusSalary");
+
+            PreparedStatement pstm = connection.prepareStatement("INSERT INTO customer values (?,?,?,?)");
+            pstm.setObject(1, cusID);
+            pstm.setObject(2, name);
+            pstm.setObject(3, address);
+            pstm.setObject(4, salary);
+            int rst = pstm.executeUpdate();
+
+            if ( rst> 0) {
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("status", 200);
+                objectBuilder.add("message", "Successfully Added");
+                objectBuilder.add("data", "");
+                writer.print(objectBuilder.build());
+            } else {
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                resp.setStatus(200);
+                objectBuilder.add("status", 400);
+                objectBuilder.add("message", "Unsuccessful");
+                objectBuilder.add("data", "");
+                writer.print(objectBuilder.build());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+            resp.setStatus(200);
+            objectBuilder.add("status", 500);
+            objectBuilder.add("message", "Error");
+            objectBuilder.add("data", e.getLocalizedMessage());
+            writer.print(objectBuilder.build());
+        }
     }
 }

@@ -30,6 +30,34 @@ $("#btnGetAll").click(function () {
     getAllCustomer();
 });
 
+//customerSave
+
+$("#btnCusSave").click( function () {
+    let formData = $("#customerForm").serialize();
+   $.ajax({
+       url: 'http://localhost:8081/10_BackEnd/customer',
+       method: "POST",
+       data: formData,
+
+       success: function (resp){
+
+           if(resp.status===200){
+               alert(resp.message);
+               console.log(resp);
+               getAllCustomer();
+           } else if(resp.status==400){
+               alert(resp.message);
+           }
+           else if (resp.status==500) {
+               alert(resp.data);
+           }
+       },
+       error: function (xhr){
+           console.log(xhr);
+       }
+   });
+});
+
 
 
 function bindClickEvent(){
