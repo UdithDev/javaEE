@@ -463,41 +463,14 @@
     });
 
 
-    getAllCustomer();
-    //customer GetAll
-function getAllCustomer(){
-    $("#tblCustomer").empty();
-    $.ajax({
-        url: "http://localhost:8081/10_BackEnd/customer",
-        method: 'GET',
-        dataType:'json',
-        success: function (resp) {
-            console.log(resp.data);
-
-            for (const i of resp.data) {
-                let row=`<tr><td>${i.id}</td><td>${i.name}</td><td>${i.address}</td><td>${i.salary}</td></tr>`;
-                $("#tblCustomer").append(row);
-            }
-            if(resp.status==400){
-                alert(resp.message);
-            }
-        },
-        error: function (xhr) {
-            console.log(xhr);
-        }
-    });
-}
-
-    $("#btnGetAll").click(function () {
-      getAllCustomer();
-    });
 
 </script>
+
+<script src="controllers/CustomerController.js"></script>
 <!--
 <script src="db/db.js"></script>
 <script src="models/Customer.js"></script>
 <script src="models/Item.js"></script>
-<script src="controllers/CustomerController.js"></script>
 <script src="controllers/ItemController.js"></script>
 <script src="controllers/PurchaseOrderController.js"></script>
 <script src="controllers/validations/CustomerValidations.js"></script>
