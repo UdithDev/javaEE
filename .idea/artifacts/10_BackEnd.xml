@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="10_BackEnd">
+    <output-path>$PROJECT_DIR$/out/artifacts/10_BackEnd</output-path>
+    <root id="archive" name="10_BackEnd.war">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="10_BackEnd" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="commons-dbcp2-2.10.0" />
+          <element id="library" level="project" name="commons-logging-1.2" />
+          <element id="library" level="project" name="javax.json-1.1.4" />
+          <element id="library" level="project" name="commons-pool2-2.11.1" />
+          <element id="library" level="application" name="mysql-connector-java-8.0.11" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="10_BackEnd/web/Web" />
+    </root>
+  </artifact>
+</component>

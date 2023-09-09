@@ -11,6 +11,8 @@
       <module fileurl="file://$PROJECT_DIR$/07_DBCP/07_DBCP.iml" filepath="$PROJECT_DIR$/07_DBCP/07_DBCP.iml" />
       <module fileurl="file://$PROJECT_DIR$/08_Filters/08_Filters.iml" filepath="$PROJECT_DIR$/08_Filters/08_Filters.iml" />
       <module fileurl="file://$PROJECT_DIR$/09_FrontEnd/09_FrontEnd.iml" filepath="$PROJECT_DIR$/09_FrontEnd/09_FrontEnd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/10_BackEnd/10_BackEnd.iml" filepath="$PROJECT_DIR$/10_BackEnd/10_BackEnd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/11_Front_End/11_Front_End.iml" filepath="$PROJECT_DIR$/11_Front_End/11_Front_End.iml" />
     </modules>
   </component>
 </project>
