@@ -28,7 +28,7 @@ public class CustomerServlet extends HttpServlet {
         resp.addHeader("Access-Control-Allow-Origin", "*");
         ServletContext servletContext = req.getServletContext();
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
-        PrintWriter writer = resp.getWriter();
+
 
         try {
             Connection connection = pool.getConnection();
@@ -44,15 +44,22 @@ public class CustomerServlet extends HttpServlet {
                 String salary = resultSet.getString(4);
 
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("id",id);
-                objectBuilder.add("name",name);
-                objectBuilder.add("address",address);
-                objectBuilder.add("salary",salary);
+                objectBuilder.add("id", id);
+                objectBuilder.add("name", name);
+                objectBuilder.add("address", address);
+                objectBuilder.add("salary", salary);
 
                 arrayBuilder.add(objectBuilder.build());
-                writer.print(arrayBuilder.build());
-
             }
+            connection.close();
+
+            PrintWriter writer = resp.getWriter();
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status", 200);
+            response.add("message", "Done");
+            response.add("data", arrayBuilder.build());
+
+            writer.print(response.build());
         } catch (SQLException e) {
             e.printStackTrace();
         }
