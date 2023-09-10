@@ -97,6 +97,7 @@ public class CustomerServlet extends HttpServlet {
             pstm.setObject(4, salary);
             int rst = pstm.executeUpdate();
 
+            resp.setContentType("application/json");
             if (rst > 0) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
                 resp.setStatus(HttpServletResponse.SC_CREATED);//201
@@ -130,6 +131,7 @@ public class CustomerServlet extends HttpServlet {
         resp.addHeader("Access-Control-Allow-Origin", "*");
         String cusID = req.getParameter("cusID");
         System.out.println(cusID);
+        resp.setContentType("application/json");
 
         ServletContext servletContext = req.getServletContext();
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
