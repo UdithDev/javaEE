@@ -131,4 +131,10 @@ public class CustomerServlet extends HttpServlet {
         String cusID = req.getParameter("cusID");
         System.out.println(cusID);
     }
+
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin","*");
+    }
 }
