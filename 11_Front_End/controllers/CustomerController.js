@@ -1,21 +1,21 @@
-
 //customer GetAll
 
 getAllCustomer();
-function getAllCustomer(){
+
+function getAllCustomer() {
     $("#tblCustomer").empty();
     $.ajax({
         url: "http://localhost:8081/10_BackEnd/customer",
         method: 'GET',
-        dataType:'json',
+        dataType: 'json',
         success: function (resp) {
             console.log(resp.data);
 
             for (const i of resp.data) {
-                let row=`<tr><td>${i.id}</td><td>${i.name}</td><td>${i.address}</td><td>${i.salary}</td></tr>`;
+                let row = `<tr><td>${i.id}</td><td>${i.name}</td><td>${i.address}</td><td>${i.salary}</td></tr>`;
                 $("#tblCustomer").append(row);
             }
-            if(resp.status==400){
+            if (resp.status == 400) {
                 alert(resp.message);
             }
 
@@ -26,43 +26,49 @@ function getAllCustomer(){
         }
     });
 }
+
 $("#btnGetAll").click(function () {
     getAllCustomer();
 });
 
 //customerSave
 
-$("#btnCusSave").click( function () {
+$("#btnCusSave").click(function () {
+    alert("ok");
     let formData = $("#customerForm").serialize();
-   $.ajax({
-       url: 'http://localhost:8081/10_BackEnd/customer',
-       method: "POST",
-       data: formData,
+    $.ajax({
+        url: 'http://localhost:8081/10_BackEnd/customer',
+        method: "POST",
+        data: formData,
+       /* success: function (resp) {
 
-       success: function (resp){
-
-           if(resp.status===200){
-               alert(resp.message);
-               console.log(resp);
-               getAllCustomer();
-           } else if(resp.status==400){
-               alert(resp.message);
-           }
-           else if (resp.status==500) {
-               alert(resp.data);
-           }
-       },
-       error: function (xhr){
-           console.log(xhr);
-       }
-   });
+            if (resp.status == 200) {
+                alert(resp.message);
+                console.log(resp);
+                getAllCustomer();
+            } else if (resp.status == 500) {
+                alert(resp.data);
+            }
+        },*/
+        success: function (resp){
+          if(resp.status==200){
+             alert(resp.message);
+             console.log(resp);
+             getAllCustomer();
+          }  else if(resp.status==500){
+              alert(resp.data);
+          }
+        },
+        error: function (xhr) {
+            console.log(xhr);
+        }
+    });
 });
 
 
-
-function bindClickEvent(){
-    $("#tblCustomer>tr").click( function (){
-        let id= $(this).children().eq(0).text();
+function bindClickEvent() {
+    $("#tblCustomer>tr").click(function () {
+        let id = $(this).children().eq(0).text();
         let name = $(this).children().eq(1).text();
         let address = $(this).children().eq(2).text();
         let salary = $(this).children().eq(3).text();

@@ -99,18 +99,19 @@ public class CustomerServlet extends HttpServlet {
 
             if ( rst> 0) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                resp.setStatus(HttpServletResponse.SC_CREATED);//201
                 objectBuilder.add("status", 200);
                 objectBuilder.add("message", "Successfully Added");
-                objectBuilder.add("data", "");
+                objectBuilder.add("data", objectBuilder.build());
                 writer.print(objectBuilder.build());
-            } else {
+            }/* else {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
                 resp.setStatus(200);
                 objectBuilder.add("status", 400);
                 objectBuilder.add("message", "Unsuccessful");
                 objectBuilder.add("data", "");
                 writer.print(objectBuilder.build());
-            }
+            }*/
         } catch (SQLException e) {
             e.printStackTrace();
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
