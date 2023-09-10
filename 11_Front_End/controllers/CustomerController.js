@@ -40,14 +40,14 @@ $("#btnCusSave").click(function () {
         method: "POST",
         data: formData,
 
-        success: function (resp){
-          if(resp.status==200){
-             alert(resp.message);
-             console.log(resp);
-             getAllCustomer();
-          }  else if(resp.status==500){
-              alert(resp.data);
-          }
+        success: function (resp) {
+            if (resp.status == 200) {
+                alert(resp.message);
+                console.log(resp);
+                getAllCustomer();
+            } else if (resp.status == 500) {
+                alert(resp.data);
+            }
         },
         error: function (xhr) {
             console.log(xhr);
@@ -55,16 +55,27 @@ $("#btnCusSave").click(function () {
     });
 });
 
-$("#btnCusDelete").click( function () {
+$("#btnCusDelete").click(function () {
     let id = $("#txtCustomerID").val();
     $.ajax({
-        url:'http://localhost:8081/10_BackEnd/customer?cusID=' + id,
+        url: 'http://localhost:8081/10_BackEnd/customer?cusID=' + id,
         method: 'DELETE',
 
-        success: function (resp){
-            console.log(resp);
+        success: function (resp) {
+            if (resp.status == 200) {
+                alert(resp.message);
+                console.log(resp);
+                getAllCustomer();
+            } else if (resp.status == 400) {
+                console.log(resp);
+                alert(resp.message);
+            } else {
+                alert(resp.message);
+                console.log(resp.data);
+            }
+
         },
-        error: function (xhr){
+        error: function (xhr) {
             console.log(xhr);
         }
     });
