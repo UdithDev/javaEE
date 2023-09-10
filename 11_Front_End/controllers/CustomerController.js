@@ -34,22 +34,12 @@ $("#btnGetAll").click(function () {
 //customerSave
 
 $("#btnCusSave").click(function () {
-    alert("ok");
     let formData = $("#customerForm").serialize();
     $.ajax({
         url: 'http://localhost:8081/10_BackEnd/customer',
         method: "POST",
         data: formData,
-       /* success: function (resp) {
 
-            if (resp.status == 200) {
-                alert(resp.message);
-                console.log(resp);
-                getAllCustomer();
-            } else if (resp.status == 500) {
-                alert(resp.data);
-            }
-        },*/
         success: function (resp){
           if(resp.status==200){
              alert(resp.message);
@@ -64,6 +54,21 @@ $("#btnCusSave").click(function () {
         }
     });
 });
+
+$("#btnCusDelete").click( function () {
+    let id = $("#txtCustomerID").val();
+    $.ajax({
+        url:'http://localhost:8081/10_BackEnd/customer?cusID=' + id,
+        method: 'DELETE',
+
+        success: function (resp){
+            console.log(resp);
+        },
+        error: function (xhr){
+            console.log(xhr);
+        }
+    });
+})
 
 
 function bindClickEvent() {

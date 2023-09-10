@@ -122,4 +122,13 @@ public class CustomerServlet extends HttpServlet {
             writer.print(objectBuilder.build());
         }
     }
+
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("Delete Method Invoked");
+        resp.addHeader("Access-Control-Allow-Origin","*");
+        String cusID = req.getParameter("cusID");
+        System.out.println(cusID);
+    }
 }
