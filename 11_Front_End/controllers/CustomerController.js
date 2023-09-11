@@ -40,11 +40,13 @@ $("#btnCusSave").click(function () {
         method: "POST",
         data: formData,
 
+
         success: function (resp) {
             if (resp.status == 200) {
                 alert(resp.message);
                 console.log(resp);
                 getAllCustomer();
+                console.log(resp);
             } else if (resp.status == 500) {
                 alert(resp.data);
             }

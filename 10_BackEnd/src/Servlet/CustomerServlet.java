@@ -100,7 +100,6 @@ public class CustomerServlet extends HttpServlet {
             resp.setContentType("application/json");
             if (rst > 0) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                resp.setStatus(HttpServletResponse.SC_CREATED);//201
                 objectBuilder.add("status", 200);
                 objectBuilder.add("message", "Successfully Added");
                 objectBuilder.add("data", objectBuilder.build());
@@ -168,6 +167,7 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Access-Control-Allow-Origin", "*");
-        resp.addHeader("Access-Control-Allow-Methods", "DELETE");
+        resp.addHeader("Access-Control-Allow-Methods", "DELETE ");
+        resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
     }
 }
