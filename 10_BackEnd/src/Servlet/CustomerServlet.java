@@ -2,9 +2,7 @@ package Servlet;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
+import javax.json.*;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -167,19 +165,22 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
         System.out.println("Update");
-        String id = req.getParameter("id");
-        String name = req.getParameter("name");
-        String address = req.getParameter("address");
-        String salary = req.getParameter("salary");
 
-        System.out.println(id+" "+name+" "+address+" "+salary);
+        JsonReader reader = Json.createReader(req.getReader());
+        JsonObject jsonObject = reader.readObject();
+        String id = jsonObject.getString("id");
+        String name = jsonObject.getString("name");
+        String address = jsonObject.getString("address");
+        String salary = jsonObject.getString("salary");
+        System.out.println(id + " " + name + " " + address + " " + salary);
     }
 
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Access-Control-Allow-Origin", "*");
-        resp.addHeader("Access-Control-Allow-Methods", "DELETE ");
+        resp.addHeader("Access-Control-Allow-Methods", "DELETE  , PUT");
         resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
     }
 }

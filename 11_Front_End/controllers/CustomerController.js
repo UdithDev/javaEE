@@ -59,6 +59,8 @@ $("#btnCusSave").click(function () {
     });
 });
 
+
+//customer Delete
 $("#btnCusDelete").click(function () {
     let id = $("#txtCustomerID").val();
     $.ajax({
@@ -84,7 +86,29 @@ $("#btnCusDelete").click(function () {
         }
     });
 })
+//customer Update
+$("#btnUpdate").click(function () {
+    let cusOb = {
+        "id": "C017",
+        "name": "Udith",
+        "address": "Kalutara",
+        "salary": "345000"
+    }
 
+    $.ajax({
+        url: "http://localhost:8081/10_BackEnd/customer",
+        method: "PUT",
+        data: JSON.stringify(cusOb),
+
+        success: function (resp) {
+            console.log(resp);
+        },
+        error: function (xhr) {
+            console.log(xhr);
+        }
+
+    })
+})
 
 function bindClickEvent() {
     $("#tblCustomer>tr").click(function () {
