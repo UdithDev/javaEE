@@ -101,7 +101,6 @@
     });
 
     $("#btnSave").click(function () {
-        let customerID = $("#txtCustomerID").val();
         let data = $("#customerForm").serialize();
         $.ajax({
             url: BASE_URL + "customer",

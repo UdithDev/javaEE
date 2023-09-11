@@ -100,22 +100,23 @@ public class CustomerServlet extends HttpServlet {
             resp.setContentType("application/json");
             if (rst > 0) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+//                resp.setStatus(HttpServletResponse.SC_CREATED);//201
                 objectBuilder.add("status", 200);
                 objectBuilder.add("message", "Successfully Added");
-                objectBuilder.add("data", objectBuilder.build());
+                objectBuilder.add("data", "");
                 writer.print(objectBuilder.build());
-            }/* else {
+            } else {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                resp.setStatus(200);
+                resp.setStatus(HttpServletResponse.SC_OK);
                 objectBuilder.add("status", 400);
                 objectBuilder.add("message", "Unsuccessful");
                 objectBuilder.add("data", "");
                 writer.print(objectBuilder.build());
-            }*/
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-            resp.setStatus(200);
+            resp.setStatus(HttpServletResponse.SC_OK);
             objectBuilder.add("status", 500);
             objectBuilder.add("message", "Error");
             objectBuilder.add("data", e.getLocalizedMessage());
@@ -163,6 +164,17 @@ public class CustomerServlet extends HttpServlet {
         }
     }
 
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("Update");
+        String id = req.getParameter("id");
+        String name = req.getParameter("name");
+        String address = req.getParameter("address");
+        String salary = req.getParameter("salary");
+
+        System.out.println(id+" "+name+" "+address+" "+salary);
+    }
 
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
