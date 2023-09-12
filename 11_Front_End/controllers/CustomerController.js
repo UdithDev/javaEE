@@ -85,30 +85,50 @@ $("#btnCusDelete").click(function () {
             console.log(xhr);
         }
     });
-})
+});
 //customer Update
 $("#btnUpdate").click(function () {
     let cusOb = {
-        "id": "C017",
-        "name": "Udith",
-        "address": "Kalutara",
-        "salary": "345000"
+        id: $("#txtCustomerID").val(),
+        name: $("#txtCustomerName").val(),
+        address: $("#txtCustomerAddress").val(),
+        salary: $("#txtCustomerSalary").val()
     }
 
     $.ajax({
         url: "http://localhost:8081/10_BackEnd/customer",
         method: "PUT",
+        contentType: "application/json",
         data: JSON.stringify(cusOb),
 
+
         success: function (resp) {
-            console.log(resp);
+           /* alert(resp.message);
+            getAllCustomer();*/
+            if (resp.status == 200) {
+                alert(resp.message);
+                console.log(resp);
+                getAllCustomer();
+            } else if (resp.status == 400) {
+                alert(resp.message);
+                console.log(resp.data);
+            } else if (resp.status == 500) {
+                alert(resp.message);
+                console.log(resp.data);
+            } else {
+                alert(resp.message);
+                console.log(resp.data)
+            }
+
         },
-        error: function (xhr) {
-            console.log(xhr);
+        error: function (ob,status,t) {
+            console.log(ob);
+            console.log(status);
+            console.log(t);
         }
 
-    })
-})
+    });
+});
 
 function bindClickEvent() {
     $("#tblCustomer>tr").click(function () {

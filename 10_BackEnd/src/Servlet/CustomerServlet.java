@@ -175,6 +175,50 @@ public class CustomerServlet extends HttpServlet {
         String address = jsonObject.getString("address");
         String salary = jsonObject.getString("salary");
         System.out.println(id + " " + name + " " + address + " " + salary);
+
+        ServletContext servletContext = req.getServletContext();
+        BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
+
+
+        PrintWriter writer = resp.getWriter();
+        try (Connection connection = pool.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE customer SET cusName =? ,cusAddress=?, cusSalary=?  WHERE cusId=?");
+            preparedStatement.setObject(4, id);
+            preparedStatement.setObject(1, name);
+            preparedStatement.setObject(2, address);
+            preparedStatement.setObject(3, salary);
+
+            resp.setContentType("application/json");
+            if ( preparedStatement.executeUpdate() >0){
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+               /* objectBuilder.add("data", objectBuilder.build());
+                objectBuilder.add("status", 200);
+                objectBuilder.add("message", "Updated Successful");
+*/
+                objectBuilder.add("data",objectBuilder.build());
+                objectBuilder.add("status", 200);
+                objectBuilder.add("message", "Update Successful");
+
+                writer.print(objectBuilder.build());
+            } else{
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                resp.setStatus(HttpServletResponse.SC_OK);
+                objectBuilder.add("status", 400);
+                objectBuilder.add("message", "Update Failed");
+                objectBuilder.add("data", objectBuilder.build());
+                writer.print(objectBuilder.build());
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            resp.setStatus(HttpServletResponse.SC_OK);
+            JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+            objectBuilder.add("data", e.getLocalizedMessage());
+            objectBuilder.add("message", "Error");
+            objectBuilder.add("status", 500);
+            writer.print(objectBuilder.build());
+        }
     }
 
     @Override
