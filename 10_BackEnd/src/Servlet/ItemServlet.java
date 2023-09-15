@@ -130,7 +130,13 @@ public class ItemServlet extends HttpServlet {
             writer.print(objectBuilder.build());
 
         }
+    }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("Do Delete Method Invoked");
 
+        String code = req.getParameter("code");
+        System.out.println(code);
     }
 }
