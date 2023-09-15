@@ -9,7 +9,7 @@ function getAllCustomer() {
         method: 'GET',
         dataType: 'json',
         success: function (resp) {
-            console.log(resp.data);
+            //console.log(resp.data);
 
             for (const i of resp.data) {
                 let row = `<tr><td>${i.id}</td><td>${i.name}</td><td>${i.address}</td><td>${i.salary}</td></tr>`;
@@ -45,9 +45,8 @@ $("#btnCusSave").click(function () {
 
             if (resp.status == 200) {
                 alert(resp.message);
-                console.log(resp);
+                //console.log(JSON.parse(resp.data));
                 getAllCustomer();
-                console.log(resp);
 
             } else if (resp.status == 500) {
                 alert(resp.message);

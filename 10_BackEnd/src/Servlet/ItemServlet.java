@@ -36,8 +36,9 @@ public class ItemServlet extends HttpServlet {
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
 
 
-        try (Connection connection = pool.getConnection();){
-            PreparedStatement preparedStatement = connection.prepareStatement("Select  *  from item");
+        try{
+            Connection connection = pool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT  * FROM  item");
             ResultSet resultSet = preparedStatement.executeQuery();
 
             JsonArrayBuilder allItems = Json.createArrayBuilder();
@@ -48,22 +49,24 @@ public class ItemServlet extends HttpServlet {
                 String itemPrice = resultSet.getString(4);
 
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("code",itemID);
-                objectBuilder.add("description",itemName);
-                objectBuilder.add("itemQty",itemQty);
-                objectBuilder.add("unitPrice",itemPrice);
+                objectBuilder.add("code", itemID);
+                objectBuilder.add("description", itemName);
+                objectBuilder.add("itemQty", itemQty);
+                objectBuilder.add("unitPrice", itemPrice);
 
-                System.out.println(itemID+" "+itemName+" "+itemQty+" "+itemPrice);
 
                 allItems.add(objectBuilder.build());
-
-                JsonObjectBuilder response = Json.createObjectBuilder();
-                response.add("status", 200);
-                response.add("message", "Done");
-                response.add("data", allItems.build());
-
-                writer.print(response.build());
             }
+            connection.close();
+
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status", 200);
+            response.add("message", "Done");
+            response.add("data", allItems.build());
+
+            writer.print(response.build());
+
+
         } catch (SQLException e) {
             JsonObjectBuilder response = Json.createObjectBuilder();
             resp.setStatus(200);
@@ -83,22 +86,23 @@ public class ItemServlet extends HttpServlet {
         ServletContext servletContext = req.getServletContext();
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
         PrintWriter writer = resp.getWriter();
+        String code = req.getParameter("code");
+        String description = req.getParameter("description");
+        String itemQty = req.getParameter("itemQty");
+        String unitPrice = req.getParameter("unitPrice");
 
-        resp.setContentType("application/json");
-        try(Connection connection = pool.getConnection();) {
+        System.out.println(code+" "+description+" "+itemQty+" "+unitPrice);
 
-            String code = req.getParameter("code");
-            String description = req.getParameter("description");
-            String itemQty = req.getParameter("itemQty");
-            String unitPrice = req.getParameter("unitPrice");
-
-            System.out.println(code+" "+description+" "+itemQty+" "+unitPrice);
+        try {
+            Connection connection = pool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("Insert INTO item values (?,?,?,?)");
 
             preparedStatement.setObject(1,code);
             preparedStatement.setObject(2,description);
             preparedStatement.setObject(3,itemQty);
             preparedStatement.setObject(4,unitPrice);
+
+            resp.setContentType("application/json");
 
             if(preparedStatement.executeUpdate()>0){
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
@@ -109,21 +113,22 @@ public class ItemServlet extends HttpServlet {
             }
             else {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                resp.setStatus(200);
+                resp.setStatus(HttpServletResponse.SC_OK);
                 objectBuilder.add("status", 400);
                 objectBuilder.add("message","Data Add Failed");
-                objectBuilder.add("data",objectBuilder.build());
+                objectBuilder.add("data"," ");
                 writer.print(objectBuilder.build());
             }
 
-        } catch (SQLException e) {
+        } catch ( SQLException e){
             e.printStackTrace();
+            resp.setStatus(HttpServletResponse.SC_OK);
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-            resp.setStatus(200);
             objectBuilder.add("status", 500);
-            objectBuilder.add("message","Error");
-            objectBuilder.add("data",e.getLocalizedMessage());
+            objectBuilder.add("message", "Error");
+            objectBuilder.add("data", e.getLocalizedMessage());
             writer.print(objectBuilder.build());
+
         }
 
 

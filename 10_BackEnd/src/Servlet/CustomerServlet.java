@@ -33,7 +33,6 @@ public class CustomerServlet extends HttpServlet {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT  * FROM  customer");
             ResultSet resultSet = preparedStatement.executeQuery();
 
-
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
             while (resultSet.next()) {
                 String id = resultSet.getString(1);
