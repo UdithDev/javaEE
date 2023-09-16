@@ -36,7 +36,7 @@ public class ItemServlet extends HttpServlet {
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
 
 
-        try{
+        try {
             Connection connection = pool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT  * FROM  item");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -91,36 +91,35 @@ public class ItemServlet extends HttpServlet {
         String itemQty = req.getParameter("itemQty");
         String unitPrice = req.getParameter("unitPrice");
 
-        System.out.println(code+" "+description+" "+itemQty+" "+unitPrice);
+        System.out.println(code + " " + description + " " + itemQty + " " + unitPrice);
 
         try {
             Connection connection = pool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("Insert INTO item values (?,?,?,?)");
 
-            preparedStatement.setObject(1,code);
-            preparedStatement.setObject(2,description);
-            preparedStatement.setObject(3,itemQty);
-            preparedStatement.setObject(4,unitPrice);
+            preparedStatement.setObject(1, code);
+            preparedStatement.setObject(2, description);
+            preparedStatement.setObject(3, itemQty);
+            preparedStatement.setObject(4, unitPrice);
 
             resp.setContentType("application/json");
 
-            if(preparedStatement.executeUpdate()>0){
+            if (preparedStatement.executeUpdate() > 0) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
                 objectBuilder.add("status", 200);
-                objectBuilder.add("message","Added Successful");
-                objectBuilder.add("data"," ");
+                objectBuilder.add("message", "Added Successful");
+                objectBuilder.add("data", " ");
                 writer.print(objectBuilder.build());
-            }
-            else {
+            } else {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
                 resp.setStatus(HttpServletResponse.SC_OK);
                 objectBuilder.add("status", 400);
-                objectBuilder.add("message","Data Add Failed");
-                objectBuilder.add("data"," ");
+                objectBuilder.add("message", "Data Add Failed");
+                objectBuilder.add("data", " ");
                 writer.print(objectBuilder.build());
             }
 
-        } catch ( SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_OK);
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
@@ -135,8 +134,54 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Do Delete Method Invoked");
+        resp.addHeader("Access-Control-Allow-Origin", "*");
 
         String code = req.getParameter("code");
-        System.out.println(code);
+        resp.setContentType("application/json");
+        ServletContext servletContext = req.getServletContext();
+        BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
+        PrintWriter writer = resp.getWriter();
+
+        try (Connection connection = pool.getConnection()) {
+            PreparedStatement pstm = connection.prepareStatement("DELETE from  item where itemID=?");
+            pstm.setObject(1, code);
+
+            if (pstm.executeUpdate() > 0) {
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("status", 200);
+                objectBuilder.add("message", "Successfully Delete!!!");
+                objectBuilder.add("data", "");
+                writer.print(objectBuilder.build());
+            }
+            else {
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                resp.setStatus(200);
+                objectBuilder.add("status", 400);
+                objectBuilder.add("message", "Failed!!!");
+                objectBuilder.add("data", "");
+                writer.print(objectBuilder.build());
+            }
+        } catch (SQLException throwbel) {
+            throwbel.printStackTrace();
+
+            JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+            resp.setStatus(200);
+            objectBuilder.add("status", 500);
+            objectBuilder.add("message", "Error");
+            objectBuilder.add("data", throwbel.getLocalizedMessage());
+            writer.print(objectBuilder.build());
+        }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPut(req, resp);
+    }
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin", "http://localhost:63342");
+        resp.addHeader("Access-Control-Allow-Headers", "Content-Type ,auth");
+        resp.addHeader("Access-Control-Allow-Methods", "DELETE");
     }
 }

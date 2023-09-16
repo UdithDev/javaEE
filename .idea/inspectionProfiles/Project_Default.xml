@@ -6,5 +6,12 @@
         <language minSize="46" name="Java" />
       </Languages>
     </inspection_tool>
+    <inspection_tool class="IncorrectHttpHeaderInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="customHeaders">
+        <set>
+          <option value=" Access-Control-Allow-Methods " />
+        </set>
+      </option>
+    </inspection_tool>
   </profile>
 </component>

@@ -67,6 +67,18 @@ $("#btnItemDelete").click(function () {
 
         success: function (resp) {
             console.log(resp);
+
+            if(resp.status===200){
+                alert(resp.message);
+                getAllItem();
+            }
+            else if(resp.status===400){
+                alert(resp.message);
+            }
+            else {
+                alert(resp.message);
+                console.log(resp.data);
+            }
         },
         error: function (xhr) {
             console.log(xhr);
