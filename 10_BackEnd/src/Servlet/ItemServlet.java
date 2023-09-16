@@ -2,9 +2,7 @@ package Servlet;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
+import javax.json.*;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -152,8 +150,7 @@ public class ItemServlet extends HttpServlet {
                 objectBuilder.add("message", "Successfully Delete!!!");
                 objectBuilder.add("data", "");
                 writer.print(objectBuilder.build());
-            }
-            else {
+            } else {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
                 resp.setStatus(200);
                 objectBuilder.add("status", 400);
@@ -175,13 +172,65 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+
+
+        ServletContext servletContext = req.getServletContext();
+        BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
+
+        JsonReader reader = Json.createReader(req.getReader());
+        JsonObject jsonObject = reader.readObject();
+        String code = jsonObject.getString("code");
+        String description = jsonObject.getString("description");
+        String itemQty = jsonObject.getString("itemQty");
+        String unitPrice = jsonObject.getString("unitPrice");
+
+        PrintWriter writer = resp.getWriter();
+
+        try (Connection connection = pool.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE  item set itemName=?, itemQty=?, itemPrice=? where itemID=?");
+            preparedStatement.setObject(4, code);
+            preparedStatement.setObject(1, description);
+            preparedStatement.setObject(2, itemQty);
+            preparedStatement.setObject(3, unitPrice);
+
+            resp.setContentType("application/json");
+            if (preparedStatement.executeUpdate() > 0) {
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("status", 200);
+                objectBuilder.add("message", "Successfully Updated");
+                objectBuilder.add("data", "");
+
+
+                writer.print(objectBuilder.build());
+            } else {
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                resp.setStatus(200);
+                objectBuilder.add("status", 400);
+                objectBuilder.add("message", " Updated Failed");
+                objectBuilder.add("data", objectBuilder.build());
+
+                writer.print(objectBuilder.build());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+            resp.setStatus(200);
+            objectBuilder.add("status", 500);
+            objectBuilder.add("message", " Error");
+            objectBuilder.add("data", e.getLocalizedMessage());
+
+            writer.print(objectBuilder.build());
+        }
+
+
     }
 
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Access-Control-Allow-Origin", "http://localhost:63342");
         resp.addHeader("Access-Control-Allow-Headers", "Content-Type ,auth");
-        resp.addHeader("Access-Control-Allow-Methods", "DELETE");
+        resp.addHeader("Access-Control-Allow-Methods", "DELETE ,PUT");
     }
 }

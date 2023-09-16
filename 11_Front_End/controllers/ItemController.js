@@ -68,14 +68,12 @@ $("#btnItemDelete").click(function () {
         success: function (resp) {
             console.log(resp);
 
-            if(resp.status===200){
+            if (resp.status === 200) {
                 alert(resp.message);
                 getAllItem();
-            }
-            else if(resp.status===400){
+            } else if (resp.status === 400) {
                 alert(resp.message);
-            }
-            else {
+            } else {
                 alert(resp.message);
                 console.log(resp.data);
             }
@@ -85,6 +83,46 @@ $("#btnItemDelete").click(function () {
 
         }
     })
+});
+
+//update Item
+
+$("#btnItemUpdate").click(function () {
+
+    let itemOb = {
+        code: $("#itemCode").val(),
+        description: $("#itemName").val(),
+        itemQty: $("#itemQty").val(),
+        unitPrice: $("#itemPrice").val()
+    }
+
+
+    $.ajax({
+        url: "http://localhost:8081/10_BackEnd/item",
+        method: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(itemOb),
+
+        success: function (resp) {
+
+            alert(resp.message);
+            getAllItem();
+           /* if (resp.status === 200) {
+                alert(resp.message);
+                console.log(resp);
+                getAllItem();
+            } else if (resp.status === 400) {
+                alert(resp.message);
+                console.log(resp.data);
+            } else {
+                alert(resp.message);
+                console.log(resp.data)
+            }*/
+        },
+        error: function (xhr) {
+            console.log(xhr);
+        }
+    });
 });
 
 
