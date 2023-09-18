@@ -1,3 +1,5 @@
+const BASE_URL = "http://localhost:8081/10_BackEnd/"
+
 //customer GetAll
 
 getAllCustomer();
@@ -5,7 +7,7 @@ getAllCustomer();
 function getAllCustomer() {
     $("#tblCustomer").empty();
     $.ajax({
-        url: "http://localhost:8081/10_BackEnd/customer",
+        url: BASE_URL + "customer",
         method: 'GET',
         dataType: 'json',
         success: function (resp) {
@@ -15,11 +17,11 @@ function getAllCustomer() {
                 let row = `<tr><td>${i.id}</td><td>${i.name}</td><td>${i.address}</td><td>${i.salary}</td></tr>`;
                 $("#tblCustomer").append(row);
             }
-            if (resp.status == 400) {
+            if (resp.status === 400) {
                 alert(resp.message);
             }
 
-            bindClickEvent()
+            bindClickEvent();
         },
         error: function (xhr) {
             console.log(xhr);
@@ -36,19 +38,19 @@ $("#btnGetAll").click(function () {
 $("#btnCusSave").click(function () {
     let formData = $("#customerForm").serialize();
     $.ajax({
-        url: 'http://localhost:8081/10_BackEnd/customer',
+        url: BASE_URL + 'customer',
         method: "POST",
         data: formData,
 
 
         success: function (resp) {
 
-            if (resp.status == 200) {
+            if (resp.status === 200) {
                 alert(resp.message);
                 //console.log(JSON.parse(resp.data));
                 getAllCustomer();
 
-            } else if (resp.status == 500) {
+            } else if (resp.status === 500) {
                 alert(resp.message);
             }
         },
@@ -63,15 +65,15 @@ $("#btnCusSave").click(function () {
 $("#btnCusDelete").click(function () {
     let id = $("#txtCustomerID").val();
     $.ajax({
-        url: 'http://localhost:8081/10_BackEnd/customer?cusID=' + id,
+        url: BASE_URL + 'customer?cusID=' + id,
         method: 'DELETE',
 
         success: function (resp) {
-            if (resp.status == 200) {
+            if (resp.status === 200) {
                 alert(resp.message);
                 console.log(resp);
                 getAllCustomer();
-            } else if (resp.status == 400) {
+            } else if (resp.status === 400) {
                 console.log(resp);
                 alert(resp.message);
             } else {
@@ -95,23 +97,23 @@ $("#btnUpdate").click(function () {
     }
 
     $.ajax({
-        url: "http://localhost:8081/10_BackEnd/customer",
+        url: BASE_URL + "customer",
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(cusOb),
 
 
         success: function (resp) {
-           /* alert(resp.message);
-            getAllCustomer();*/
-            if (resp.status == 200) {
+            /* alert(resp.message);
+             getAllCustomer();*/
+            if (resp.status === 200) {
                 alert(resp.message);
                 console.log(resp);
                 getAllCustomer();
-            } else if (resp.status == 400) {
+            } else if (resp.status === 400) {
                 alert(resp.message);
                 console.log(resp.data);
-            } else if (resp.status == 500) {
+            } else if (resp.status === 500) {
                 alert(resp.message);
                 console.log(resp.data);
             } else {
@@ -120,7 +122,7 @@ $("#btnUpdate").click(function () {
             }
 
         },
-        error: function (ob,status,t) {
+        error: function (ob, status, t) {
             console.log(ob);
             console.log(status);
             console.log(t);

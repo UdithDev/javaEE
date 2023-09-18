@@ -1,9 +1,12 @@
+const BASE_URL_2 = "http://localhost:8081/10_BackEnd/"
+
+
 getAllItem();
 
 function getAllItem() {
     $("#tblItem").empty();
     $.ajax({
-        url: "http://localhost:8081/10_BackEnd/item",
+        url: BASE_URL_2 + "item",
         method: 'GET',
         dataType: 'json',
         success: function (resp) {
@@ -13,7 +16,7 @@ function getAllItem() {
                 let row = `<tr><td>${i.code}</td><td>${i.description}</td><td>${i.itemQty}</td><td>${i.unitPrice}</td></tr>`;
                 $("#tblItem").append(row);
             }
-            if (resp.status == 400) {
+            if (resp.status === 400) {
                 alert(resp.message);
             }
 
@@ -35,7 +38,7 @@ $("#itemGetAll").click(function () {
 $("#btnSaveItem").click(function () {
     let formData = $("#itemForm").serialize();
     $.ajax({
-        url: "http://localhost:8081/10_BackEnd/item",
+        url: BASE_URL_2 + "item",
         method: "POST",
         data: formData,
 
@@ -62,7 +65,7 @@ $("#btnSaveItem").click(function () {
 $("#btnItemDelete").click(function () {
     let code = $("#itemCode").val();
     $.ajax({
-        url: 'http://localhost:8081/10_BackEnd/item?code=' + code,
+        url: BASE_URL_2 + 'item?code=' + code,
         method: "DELETE",
 
         success: function (resp) {
@@ -98,7 +101,7 @@ $("#btnItemUpdate").click(function () {
 
 
     $.ajax({
-        url: "http://localhost:8081/10_BackEnd/item",
+        url: BASE_URL_2 + "item",
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(itemOb),
@@ -107,17 +110,17 @@ $("#btnItemUpdate").click(function () {
 
             alert(resp.message);
             getAllItem();
-           /* if (resp.status === 200) {
-                alert(resp.message);
-                console.log(resp);
-                getAllItem();
-            } else if (resp.status === 400) {
-                alert(resp.message);
-                console.log(resp.data);
-            } else {
-                alert(resp.message);
-                console.log(resp.data)
-            }*/
+            /* if (resp.status === 200) {
+                 alert(resp.message);
+                 console.log(resp);
+                 getAllItem();
+             } else if (resp.status === 400) {
+                 alert(resp.message);
+                 console.log(resp.data);
+             } else {
+                 alert(resp.message);
+                 console.log(resp.data)
+             }*/
         },
         error: function (xhr) {
             console.log(xhr);
