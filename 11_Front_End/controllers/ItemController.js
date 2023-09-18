@@ -1,4 +1,4 @@
-const BASE_URL_2 = "http://localhost:8081/10_BackEnd/"
+
 
 
 getAllItem();
@@ -6,7 +6,7 @@ getAllItem();
 function getAllItem() {
     $("#tblItem").empty();
     $.ajax({
-        url: BASE_URL_2 + "item",
+        url: BASE_URL + "item",
         method: 'GET',
         dataType: 'json',
         success: function (resp) {
@@ -39,7 +39,7 @@ $("#itemGetAll").click(function () {
 $("#btnSaveItem").click(function () {
     let formData = $("#itemForm").serialize();
     $.ajax({
-        url: BASE_URL_2 + "item",
+        url: BASE_URL + "item",
         method: "POST",
         data: formData,
 
@@ -66,7 +66,7 @@ $("#btnSaveItem").click(function () {
 $("#btnItemDelete").click(function () {
     let code = $("#itemCode").val();
     $.ajax({
-        url: BASE_URL_2 + 'item?code=' + code,
+        url: BASE_URL + 'item?code=' + code,
         method: "DELETE",
 
         success: function (resp) {
@@ -102,7 +102,7 @@ $("#btnItemUpdate").click(function () {
 
 
     $.ajax({
-        url: BASE_URL_2 + "item",
+        url: BASE_URL + "item",
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(itemOb),

@@ -22,14 +22,12 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("DO Get Method INVOKED");
-
-        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
         ServletContext servletContext = req.getServletContext();
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
 
         PrintWriter writer = resp.getWriter();
-        try {
-            Connection connection = pool.getConnection();
+        try(Connection connection = pool.getConnection();) {
+
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT  * FROM  customer");
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -48,7 +46,7 @@ public class CustomerServlet extends HttpServlet {
 
                 arrayBuilder.add(objectBuilder.build());
             }
-            connection.close();
+
 
 
             JsonObjectBuilder response = Json.createObjectBuilder();
@@ -72,7 +70,7 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
+
         System.out.println("Post method invoked");
 
         ServletContext servletContext = req.getServletContext();
@@ -125,7 +123,7 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Delete Method Invoked");
-        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
+
         String cusID = req.getParameter("cusID");
         System.out.println(cusID);
         resp.setContentType("application/json");
@@ -164,7 +162,7 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
+
         System.out.println("Update");
 
         JsonReader reader = Json.createReader(req.getReader());
@@ -188,18 +186,18 @@ public class CustomerServlet extends HttpServlet {
             preparedStatement.setObject(3, salary);
 
             resp.setContentType("application/json");
-            if ( preparedStatement.executeUpdate() >0){
+            if (preparedStatement.executeUpdate() > 0) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
                /* objectBuilder.add("data", objectBuilder.build());
                 objectBuilder.add("status", 200);
                 objectBuilder.add("message", "Updated Successful");
 */
-                objectBuilder.add("data",objectBuilder.build());
+                objectBuilder.add("data", objectBuilder.build());
                 objectBuilder.add("status", 200);
                 objectBuilder.add("message", "Update Successful");
 
                 writer.print(objectBuilder.build());
-            } else{
+            } else {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
                 resp.setStatus(HttpServletResponse.SC_OK);
                 objectBuilder.add("status", 400);
@@ -220,9 +218,5 @@ public class CustomerServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
 
-    }
 }

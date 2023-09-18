@@ -25,14 +25,15 @@ public class CorsFilter implements Filter {
 
         String method = request.getMethod();
 
-        if (method.equals("OPTION")) {
+
+        if (method.equals("OPTIONS")) {
+            response.setStatus(200);
             response.addHeader("Access-Control-Allow-Origin", "*");
             response.addHeader("Access-Control-Allow-Methods", "DELETE  , PUT");
             response.addHeader("Access-Control-Allow-Headers", "Content-Type");
         } else {
             response.addHeader("Access-Control-Allow-Origin", "*");
         }
-
     }
 
     @Override

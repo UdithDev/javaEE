@@ -26,7 +26,7 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Item");
-        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
+
 
         PrintWriter writer = resp.getWriter();
 
@@ -79,7 +79,7 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Post method Invoked");
-        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
+
 
         ServletContext servletContext = req.getServletContext();
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
@@ -222,12 +222,5 @@ public class ItemServlet extends HttpServlet {
 
             writer.print(objectBuilder.build());
         }
-    }
-
-    @Override
-    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        /*resp.addHeader("Access-Control-Allow-Origin", "http://localhost:63342");*/
-        resp.addHeader("Access-Control-Allow-Headers", "Content-Type ,auth");
-        resp.addHeader("Access-Control-Allow-Methods", "DELETE ,PUT");
     }
 }
