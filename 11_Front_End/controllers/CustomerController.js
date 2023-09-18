@@ -21,7 +21,7 @@ function getAllCustomer() {
                 alert(resp.message);
             }
 
-            bindClickEvent();
+            bindClick();
         },
         error: function (xhr) {
             console.log(xhr);
@@ -131,7 +131,7 @@ $("#btnUpdate").click(function () {
     });
 });
 
-function bindClickEvent() {
+function bindClick() {
     $("#tblCustomer>tr").click(function () {
         let id = $(this).children().eq(0).text();
         let name = $(this).children().eq(1).text();

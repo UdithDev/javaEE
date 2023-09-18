@@ -26,7 +26,7 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Item");
-        resp.addHeader("Access-Control-Allow-Origin", "*");
+        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
 
         PrintWriter writer = resp.getWriter();
 
@@ -79,7 +79,7 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Post method Invoked");
-        resp.addHeader("Access-Control-Allow-Origin", "*");
+        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
 
         ServletContext servletContext = req.getServletContext();
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
@@ -132,7 +132,7 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Do Delete Method Invoked");
-        resp.addHeader("Access-Control-Allow-Origin", "*");
+
 
         String code = req.getParameter("code");
         resp.setContentType("application/json");
@@ -172,7 +172,6 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.addHeader("Access-Control-Allow-Origin", "*");
 
 
         ServletContext servletContext = req.getServletContext();
@@ -223,13 +222,11 @@ public class ItemServlet extends HttpServlet {
 
             writer.print(objectBuilder.build());
         }
-
-
     }
 
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.addHeader("Access-Control-Allow-Origin", "http://localhost:63342");
+        /*resp.addHeader("Access-Control-Allow-Origin", "http://localhost:63342");*/
         resp.addHeader("Access-Control-Allow-Headers", "Content-Type ,auth");
         resp.addHeader("Access-Control-Allow-Methods", "DELETE ,PUT");
     }

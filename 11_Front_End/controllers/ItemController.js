@@ -21,6 +21,7 @@ function getAllItem() {
             }
 
             bindClickEvent();
+
         },
         error: function (xhr) {
             console.log(xhr);

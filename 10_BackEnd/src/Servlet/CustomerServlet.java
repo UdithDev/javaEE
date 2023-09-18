@@ -23,7 +23,7 @@ public class CustomerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("DO Get Method INVOKED");
 
-        resp.addHeader("Access-Control-Allow-Origin", "*");
+        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
         ServletContext servletContext = req.getServletContext();
         BasicDataSource pool = (BasicDataSource) servletContext.getAttribute("pool");
 
@@ -72,7 +72,7 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.addHeader("Access-Control-Allow-Origin", "*");
+        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
         System.out.println("Post method invoked");
 
         ServletContext servletContext = req.getServletContext();
@@ -125,7 +125,7 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Delete Method Invoked");
-        resp.addHeader("Access-Control-Allow-Origin", "*");
+        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
         String cusID = req.getParameter("cusID");
         System.out.println(cusID);
         resp.setContentType("application/json");
@@ -164,7 +164,7 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.addHeader("Access-Control-Allow-Origin", "*");
+        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
         System.out.println("Update");
 
         JsonReader reader = Json.createReader(req.getReader());
@@ -222,8 +222,7 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.addHeader("Access-Control-Allow-Origin", "*");
-        resp.addHeader("Access-Control-Allow-Methods", "DELETE  , PUT");
-        resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
+        /*resp.addHeader("Access-Control-Allow-Origin", "*");*/
+
     }
 }
