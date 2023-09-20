@@ -1,3 +1,4 @@
+/*
 loadAllItems();
 loadAllCustomers();
 setDates();
@@ -58,3 +59,4 @@ function searchCustomer(cusID) {
 }
 
 
+*/

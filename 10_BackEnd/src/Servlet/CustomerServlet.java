@@ -160,6 +160,4 @@ public class CustomerServlet extends HttpServlet {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
         }
     }
-
-
 }
