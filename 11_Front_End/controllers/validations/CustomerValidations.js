@@ -5,19 +5,19 @@ const CUS_ADDRESS_REGEX = /^[A-Za-z0-9 ]{8,}$/;
 const CUS_SALARY_REGEX = /^[0-9]{2,}([.][0-9]{2})?$/;
 
 
-let c_vArray = [];
+let c_vArray = new Array();
 c_vArray.push({field: $("#txtCustomerID"), regEX: CUS_ID_REGEX});
 c_vArray.push({field: $("#txtCustomerName"), regEX: CUS_NAME_REGEX});
 c_vArray.push({field: $("#txtCustomerAddress"), regEX: CUS_ADDRESS_REGEX});
 c_vArray.push({field: $("#txtCustomerSalary"), regEX: CUS_SALARY_REGEX});
 
-
+/*
 function clearCustomerInputFields() {
     $("#txtCustomerID,#txtCustomerName,#txtCustomerAddress,#txtCustomerSalary").val("");
     $("#txtCustomerID,#txtCustomerName,#txtCustomerAddress,#txtCustomerSalary").css("border", "1px solid #ced4da");
     $("#txtCustomerID").focus();
     setBtn();
-}
+}*/
 
 setBtn();
 
@@ -30,7 +30,7 @@ $("#txtCustomerID, #txtCustomerName, #txtCustomerAddress, #txtCustomerSalary ").
     }
 
     //check validations
-    checkValidations(c_vArray[indexNo]);
+    checkValidation(c_vArray[indexNo]);
 
     setBtn();
 
@@ -40,11 +40,11 @@ $("#txtCustomerID, #txtCustomerName, #txtCustomerAddress, #txtCustomerSalary ").
         if (e.target.id != c_vArray[c_vArray.length - 1].field.attr("id")) {
 
             //check validation is ok
-            if (checkValidations(c_vArray[indexNo])) {
+            if (checkValidation(c_vArray[indexNo])) {
                 c_vArray[indexNo + 1].field.focus();
             }
         } else {
-            if (checkValidations(c_vArray[indexNo])) {
+            if (checkValidation(c_vArray[indexNo])) {
                 saveCustomer();
             }
         }
@@ -78,7 +78,7 @@ function setBorder(bol, ob) {
 }
 
 function checkAll() {
-    for (let i = 0; i < c_vArray; i++) {
+    for (let i = 0; i < c_vArray.length; i++) {
         if (!checkValidation(c_vArray[i])) return false;
     }
     return true;

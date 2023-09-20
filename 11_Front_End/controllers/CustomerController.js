@@ -42,7 +42,7 @@ $("#btnCusDelete").click(function () {
         let response = deleteCustomer(id);
         if (response) {
             alert("Customer Deleted");
-            clearCustomerInputFields();
+            clearAll();
             getAllCustomer();
         } else {
             alert("Customer Not Removed");
@@ -54,11 +54,11 @@ $("#btnCusDelete").click(function () {
 $("#btnUpdate").click(function () {
     let id = $("#txtCustomerID").val();
     updateCustomer(id);
-    clearCustomerInputFields();
+    clearAll();
 });
 //clear btn event
 $("#btn-clear1").click(function () {
-    clearCustomerInputFields();
+    clearAll();
 });
 
 
@@ -76,7 +76,7 @@ function saveCustomer() {
 
             success: function (resp) {
                 alert(resp.message);
-                clearCustomerInputFields()
+                clearAll();
                 getAllCustomer();
             },
             error: function (error) {
@@ -85,7 +85,7 @@ function saveCustomer() {
         });
     } else {
         alert("Customer already exits..!");
-        clearCustomerInputFields()
+        clearAll();
     }
 
 }
@@ -126,7 +126,7 @@ function deleteCustomer(id) {
         success: function (resp) {
             alert(resp.message);
             getAllCustomer();
-            clearCustomerInputFields()
+            clearAll();
             return true;
         },
         error: function (xhr) {
@@ -191,7 +191,7 @@ function updateCustomer(id) {
                 success: function (resp) {
                     alert(resp.message);
                     getAllCustomer();
-                    clearCustomerInputFields();
+                    clearAll();
 
                 },
                 error: function (error) {
@@ -202,6 +202,12 @@ function updateCustomer(id) {
 
         }
     }
-
-
 }
+
+function clearAll(){
+    $("#txtCustomerID").val("");
+    $("#txtCustomerName").val("");
+    $("#txtCustomerAddress").val("");
+    $("#txtCustomerSalary").val("");
+}
+
