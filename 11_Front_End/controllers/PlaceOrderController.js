@@ -47,9 +47,7 @@ function searchCustomer(cusID) {
         url: BASE_URL + "customer",
         dataType: "json",
         async: false,
-        headers:{
-            Auth:"user=admin,pass=admin"
-        },
+
         success: function (resp) {
             response = resp.data.filter((c) => {
                 return c.id == cusID;

@@ -38,7 +38,6 @@ public class PlaceOrderServlet extends HttpServlet {
             ResultSet rst = preparedStatement.executeQuery();
 
             JsonArrayBuilder allOrders = Json.createArrayBuilder();
-
             while (rst.next()) {
                 String oid = rst.getString(1);
                 String date = rst.getString(2);

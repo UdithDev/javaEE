@@ -87,49 +87,96 @@ $("#btnCusDelete").click(function () {
         }
     });
 });
-//customer Update
+
+
+//customer Search
+function searchCustomer(id) {
+    let resp = false;
+    $.ajax({
+        url: BASE_URL + 'customer',
+        dataType: "json",
+
+        async: false,
+
+        success: function (response) {
+            let customers = response.data;
+
+            resp = customers.find(function (customer) {
+                return customer.id == id;
+            });
+        },
+        error: function (error) {
+            resp = false;
+            alert(error.responseJSON.message);
+        }
+    });
+    return resp;
+}
+
+//update btn event
 $("#btnUpdate").click(function () {
-    let cusOb = {
-        id: $("#txtCustomerID").val(),
-        name: $("#txtCustomerName").val(),
-        address: $("#txtCustomerAddress").val(),
-        salary: $("#txtCustomerSalary").val()
+    let id = $("#txtCustomerID").val();
+    updateCustomer(id);
+});
+
+//customer Update
+function updateCustomer(id) {
+    if (searchCustomer(id) == undefined) {
+        alert("No such Customer...please check the ID");
+    } else {
+        let consent = confirm("DO you really want to update this customer ?");
+
+        if (consent) {
+            let customer = searchCustomer(id);
+
+            let name = $("#txtCustomerName").val();
+            let address = $("#txtCustomerAddress").val();
+            let salary = $("#txtCustomerSalary").val();
+
+            customer.id = id;
+            customer.name = name;
+            customer.address = address;
+            customer.salary = salary;
+
+
+            $.ajax({
+                url: BASE_URL + "customer",
+                method: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify(customer),
+
+
+                success: function (resp) {
+
+                    if (resp.status === 200) {
+                        alert(resp.message);
+                        console.log(resp);
+                        getAllCustomer();
+                    } else if (resp.status === 400) {
+                        alert(resp.message);
+                        console.log(resp.data);
+                    } else if (resp.status === 500) {
+                        alert(resp.message);
+                        console.log(resp.data);
+                    } else {
+                        alert(resp.message);
+                        console.log(resp.data)
+                    }
+
+                },
+                error: function (ob, status, t) {
+                    console.log(ob);
+                    console.log(status);
+                    console.log(t);
+                }
+
+            });
+
+        }
     }
 
-    $.ajax({
-        url: BASE_URL + "customer",
-        method: "PUT",
-        contentType: "application/json",
-        data: JSON.stringify(cusOb),
 
-
-        success: function (resp) {
-            /* alert(resp.message);
-             getAllCustomer();*/
-            if (resp.status === 200) {
-                alert(resp.message);
-                console.log(resp);
-                getAllCustomer();
-            } else if (resp.status === 400) {
-                alert(resp.message);
-                console.log(resp.data);
-            } else if (resp.status === 500) {
-                alert(resp.message);
-                console.log(resp.data);
-            } else {
-                alert(resp.message);
-                console.log(resp.data)
-            }
-
-        },
-        error: function (ob, status, t) {
-            console.log(ob);
-            console.log(status);
-            console.log(t);
-        }
-
-    });
-});
+}
 
 function bindClick() {
     $("#tblCustomer>tr").click(function () {
