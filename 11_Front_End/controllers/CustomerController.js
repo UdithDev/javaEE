@@ -5,7 +5,11 @@ getAllCustomer();
 
 //add customer Event
 $("#btnCusSave").click(function () {
-    saveCustomer();
+    if (checkAll()) {
+        saveCustomer();
+    } else {
+        alert("Error");
+    }
 });
 
 //get All customer Event
@@ -38,6 +42,7 @@ $("#btnCusDelete").click(function () {
         let response = deleteCustomer(id);
         if (response) {
             alert("Customer Deleted");
+            clearCustomerInputFields();
             getAllCustomer();
         } else {
             alert("Customer Not Removed");
@@ -49,7 +54,13 @@ $("#btnCusDelete").click(function () {
 $("#btnUpdate").click(function () {
     let id = $("#txtCustomerID").val();
     updateCustomer(id);
+    clearCustomerInputFields();
 });
+//clear btn event
+$("#btn-clear1").click(function () {
+    clearCustomerInputFields();
+});
+
 
 function saveCustomer() {
     let customerID = $("#txtCustomerID").val();
@@ -65,6 +76,7 @@ function saveCustomer() {
 
             success: function (resp) {
                 alert(resp.message);
+                clearCustomerInputFields()
                 getAllCustomer();
             },
             error: function (error) {
@@ -73,6 +85,7 @@ function saveCustomer() {
         });
     } else {
         alert("Customer already exits..!");
+        clearCustomerInputFields()
     }
 
 }
@@ -98,7 +111,7 @@ function getAllCustomer() {
             bindClick();
         },
         error: function (xhr) {
-       alert(xhr.responseJSON.message);
+            alert(xhr.responseJSON.message);
         }
     });
 }
@@ -113,6 +126,7 @@ function deleteCustomer(id) {
         success: function (resp) {
             alert(resp.message);
             getAllCustomer();
+            clearCustomerInputFields()
             return true;
         },
         error: function (xhr) {
@@ -177,6 +191,7 @@ function updateCustomer(id) {
                 success: function (resp) {
                     alert(resp.message);
                     getAllCustomer();
+                    clearCustomerInputFields();
 
                 },
                 error: function (error) {
